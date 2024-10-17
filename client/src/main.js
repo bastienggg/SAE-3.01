@@ -63,6 +63,7 @@ C.init = async function () {
     let html2 = navView.render();
     document.querySelector("#nav").innerHTML = html2;
     C.setupEventListeners();
+    C.setupHomeButtonListener();
 };
 
 C.init();
