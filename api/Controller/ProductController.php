@@ -35,14 +35,30 @@ class ProductController extends Controller {
     protected function processPostRequest(HttpRequest $request) {
         $json = $request->getJson();
         $obj = json_decode($json);
-        $p = new Product(0); // 0 is a symbolic and temporary value since the product does not have a real id yet.
-        $p->setName($obj->name);
-        $p->setid_categorie($obj->category);
-        $p->setPrice($obj->price);
-        $p->setImage($obj->image);
-        $p->setDesc($obj->description);
-        $p->setStock($obj->stock);
-        $p->setcolor($obj->couleur);
+        if ($obj->id_categorie != 3){
+            $p = new Taille($obj->id_produit);
+            $p->setName($obj->nom);
+            $p->setid_categorie($obj->id_categorie);
+            $p->setPrice($obj->prix);
+            $p->setImage($obj->image);
+            $p->setDesc($obj->description);
+            $p->setStock($obj->stock);
+            $p->setcolor($obj->couleur);
+            $p->setTaille($obj->taille);
+            array_push($res, $p);
+        }
+        else {
+            $p = new Product(0); // 0 is a symbolic and temporary value since the product does not have a real id yet.
+            $p->setName($obj->name);
+            $p->setid_categorie($obj->category);
+            $p->setPrice($obj->price);
+            $p->setImage($obj->image);
+            $p->setDesc($obj->description);
+            $p->setStock($obj->stock);
+            $p->setcolor($obj->couleur);
+        }
+        
+        
 
         $ok = $this->products->save($p); 
         return $ok ? $p : false;

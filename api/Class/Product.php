@@ -16,6 +16,7 @@ class Product implements JsonSerializable {
     private string $image; // image du produit
     private string $stock; // stock du produit
     private string $color ; // couleur du produit
+    
     private int $id_categorie; // id de la catégorie du produit
 
 
@@ -204,7 +205,42 @@ class Product implements JsonSerializable {
         return $this;
     }
 
+    
+
 }
     
+class Taille extends Product {
+    private string $taille; // taille du produit
+
+    public function __construct(int $id){
+        parent::__construct($id);
+    }
+
+    public function JsonSerialize(): mixed{
+        return ["id_produit" => $this->getId(), "nom" => $this->getName(), "description" => $this->getDesc(), "id_categorie" => $this->getid_categorie(), "prix" => $this->getPrice(), "image" => $this->getImage(), "stock" => $this->getStock(), "couleur" => $this->getColor(), "taille" => $this->getTaille()];
+    }
+    /**
+     * Get the value of taille
+     */ 
+    public function getTaille()
+    {
+        return $this->taille;
+    }
+
+    /**
+     * Set the value of taille
+     *
+     * @return  self
+     */ 
+    public function setTaille($taille): self
+    {
+        if ($taille == null){
+            $taille = "Taille unique";
+        }
+        $this->taille = $taille;
+        return $this;
+    }
+}
+
 
 ?>

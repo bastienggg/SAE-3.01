@@ -37,15 +37,30 @@ class ProductRepository extends EntityRepository {
         
         if ($answer==false) return null; // may be false if the sql request failed (wrong $id value for example)
         
-        $p = new Product($answer->id_produit);
-        $p->setName($answer->nom);
-        $p->setid_categorie($answer->id_categorie);
-        $p->setPrice($answer->prix);
-        $p->setImage($answer->image);
-        $p->setDesc($answer->description);
-        $p->setStock($answer->stock);
-        $p->setcolor($answer->couleur);
-        return $p;
+        if ($answer->id_categorie != 3){
+            $p = new Taille($answer->id_produit);
+            $p->setName($answer->nom);
+            $p->setid_categorie($answer->id_categorie);
+            $p->setPrice($answer->prix);
+            $p->setImage($answer->image);
+            $p->setDesc($answer->description);
+            $p->setStock($answer->stock);
+            $p->setcolor($answer->couleur);
+            $p->setTaille($answer->taille);
+            return $p;
+        }
+        else {
+            $p = new Product($answer->id_produit);
+            $p->setName($answer->nom);
+            $p->setid_categorie($answer->id_categorie);
+            $p->setPrice($answer->prix);
+            $p->setImage($answer->image);
+            $p->setDesc($answer->description);
+            $p->setStock($answer->stock);
+            $p->setcolor($answer->couleur);
+            return $p;
+        }
+        
     }
 
 
@@ -57,15 +72,29 @@ class ProductRepository extends EntityRepository {
 
         $res = [];
         foreach($answer as $obj){
-            $p = new Product($obj->id_produit);
-            $p->setName($obj->nom);
-            $p->setid_categorie($obj->id_categorie);
-            $p->setPrice($obj->prix);
-            $p->setImage($obj->image);
-            $p->setDesc($obj->description);
-            $p->setStock($obj->stock);
-            $p->setcolor($obj->couleur);
-
+            if ($obj->id_categorie != 3){
+                $p = new Taille($obj->id_produit);
+                $p->setName($obj->nom);
+                $p->setid_categorie($obj->id_categorie);
+                $p->setPrice($obj->prix);
+                $p->setImage($obj->image);
+                $p->setDesc($obj->description);
+                $p->setStock($obj->stock);
+                $p->setcolor($obj->couleur);
+                $p->setTaille($obj->taille);
+            }
+            else {
+                $p = new Product($obj->id_produit);
+                $p->setName($obj->nom);
+                $p->setid_categorie($obj->id_categorie);
+                $p->setPrice($obj->prix);
+                $p->setImage($obj->image);
+                $p->setDesc($obj->description);
+                $p->setStock($obj->stock);
+                $p->setcolor($obj->couleur);
+            }
+            
+            
             array_push($res, $p);
         }
        
