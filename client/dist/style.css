@@ -585,24 +585,60 @@ body {
   margin: 1rem;
 }
 
-.m-8 {
-  margin: 2rem;
+.m-1 {
+  margin: 0.25rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
+.m-2 {
+  margin: 0.5rem;
 }
 
-.block {
-  display: block;
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.ml-8 {
+  margin-left: 2rem;
+}
+
+.ml-10 {
+  margin-left: 2.5rem;
+}
+
+.mt-5 {
+  margin-top: 1.25rem;
 }
 
 .flex {
   display: flex;
 }
 
+.aspect-auto {
+  aspect-ratio: auto;
+}
+
 .h-screen {
   height: 100vh;
+}
+
+.h-40 {
+  height: 10rem;
+}
+
+.h-20 {
+  height: 5rem;
+}
+
+.h-80 {
+  height: 20rem;
+}
+
+.h-60 {
+  height: 15rem;
+}
+
+.w-1\/5 {
+  width: 20%;
 }
 
 .w-4\/12 {
@@ -617,12 +653,29 @@ body {
   width: 100vw;
 }
 
-.w-1\/5 {
-  width: 20%;
+.w-20 {
+  width: 5rem;
 }
 
-.max-w-sm {
-  max-width: 24rem;
+.w-40 {
+  width: 10rem;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
+.w-1\/3 {
+  width: 33.333333%;
+}
+
+.w-3\/4 {
+  width: 75%;
+}
+
+.w-min {
+  width: -moz-min-content;
+  width: min-content;
 }
 
 .list-none {
@@ -661,6 +714,10 @@ body {
   justify-content: space-between;
 }
 
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
 .gap-4 {
   gap: 1rem;
 }
@@ -669,24 +726,12 @@ body {
   gap: 2rem;
 }
 
-.overflow-hidden {
-  overflow: hidden;
-}
-
 .overflow-x-hidden {
   overflow-x: hidden;
 }
 
-.overflow-y-hidden {
-  overflow-y: hidden;
-}
-
 .scroll-smooth {
   scroll-behavior: smooth;
-}
-
-.rounded-lg {
-  border-radius: 0.5rem;
 }
 
 .border-2 {
@@ -719,17 +764,22 @@ body {
   padding: 1rem;
 }
 
-.p-6 {
-  padding: 1.5rem;
-}
-
 .p-8 {
   padding: 2rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
 }
 
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .text-right {
@@ -751,22 +801,13 @@ body {
   line-height: 1rem;
 }
 
-.font-semibold {
-  font-weight: 600;
-}
-
-.font-bold {
-  font-weight: 700;
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .uppercase {
   text-transform: uppercase;
-}
-
-.shadow-md {
-  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .hover\:cursor-pointer:hover {
@@ -820,14 +861,60 @@ body {
     --tw-border-opacity: 1;
     border-color: hsl(var(--clr-black) / var(--tw-border-opacity));
   }
+
+  .sm\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 }
 
 @media (min-width: 768px) {
+  .md\:m-4 {
+    margin: 1rem;
+  }
+
+  .md\:m-2 {
+    margin: 0.5rem;
+  }
+
   .md\:hidden {
     display: none;
   }
 
   .md\:w-2\/6 {
     width: 33.333333%;
+  }
+
+  .md\:w-1\/5 {
+    width: 20%;
+  }
+
+  .md\:p-4 {
+    padding: 1rem;
+  }
+
+  .md\:py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .md\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .md\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 }

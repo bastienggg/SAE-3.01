@@ -1,9 +1,13 @@
-<div class="w-1/5 flex flex-col items-center justify-center m-4">
-  <img src="{{image}}" alt="" />
-  <div class="flex flex-row w-full items-start justify-between p-4">
+<div
+  class="w-1/3 flex flex-col items-center justify-center m-2 md:m-4 md:w-1/5 hover:cursor-pointer"
+  id="{{id_catégorie}}"
+>
+  <img src="{{image}}" alt="photo du produit" />
+
+  <div class="flex flex-row w-full items-start justify-between p-1 mt-2">
     <div class="flex flex-col">
-      <h1 class="text-2xl">{{nom}}</h1>
-      <p class="text-sm">{{prix}}</p>
+      <h1 class="text-l sm:text-xl md:text-2xl">{{nom}}</h1>
+      <p class="text-s sm:text-m md:text-l">{{prix}}</p>
     </div>
     <svg
       xmlns="http://www.w3.org/2000/svg"
