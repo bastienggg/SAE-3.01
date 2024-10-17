@@ -5,6 +5,8 @@ import { MenuBurgerView } from "./ui/menu_burger/index.js";
 
 // import '../dist/style.css';
 
+//teste je sais pas 
+
 let C = {};
 C.setupHomeButtonListener = function () {
     document.getElementById('home-btn').addEventListener('click', function () {
