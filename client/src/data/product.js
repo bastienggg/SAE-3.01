@@ -51,7 +51,7 @@ ProductData.fetchAll = async function () {
 }
 
 ProductData.fetchByCategory = async function (categoryId) {
-    let data = await getRequest('categories/' + categoryId); // This is not a real API endpoint
+    let data = await getRequest('products?category=' + categoryId); // This is not a real API endpoint
     console.log('Fetched data:', data);
     console.log('Category ID:', categoryId);
     if (data === false) {

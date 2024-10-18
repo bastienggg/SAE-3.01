@@ -36,8 +36,8 @@ class ProductController extends Controller {
             $cat = $request->getParam("category"); // is there a category parameter in the request ?
             if ( $cat == false) // no request category, return all products
                 return $this->products->findAll();
-            // else // return only products of category $cat
-            //     return $this->products->findAllByCategory($cat);
+            else // return only products of category $cat
+                return $this->products->findAllByCategory($cat);
         }
     }
 
