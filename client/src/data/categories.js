@@ -19,7 +19,7 @@ let fakeCategories = [
 ];
 
 CatégorieData.fetch = async function (id) {
-    let data = await getRequest('categories/' + id);
+    let data = await getRequest('categories' + id);
     return data == false ? fakeCategories.pop() : [data];
 }
 

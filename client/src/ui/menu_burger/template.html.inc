@@ -32,7 +32,7 @@
       <p class="hover:cursor-pointer active:font-extrabold">enfants</p>
       <p class="hover:cursor-pointer active:font-extrabold">zara pre-owned</p>
     </div>
-    <ul class="flex flex-col list-none p-8 gap-4">
+    <ul class="flex flex-col list-none p-8 gap-4 categories-burger">
       <li
         class="uppercase hover:cursor-pointer active:font-extrabold"
         id="menu-burger-item"
