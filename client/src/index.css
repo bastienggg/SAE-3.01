@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import url("https://fonts.cdnfonts.com/css/helvetica-neue-55");
+
+  :root {
+    --clr-white: 0 0% 100%;
+    --clr-black: 0 0% 0%;
+
+    --ff: "Helvetica Neue", sans-serif;
+  }
+
+  body {
+    font-family: var(--ff);
+    font-weight: 200;
+    letter-spacing: 1.5px;
+    font-size: 0.75rem;
+  }
+}
