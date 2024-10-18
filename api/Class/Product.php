@@ -243,4 +243,89 @@ class Taille extends Product {
 }
 
 
+class option_couleur implements JsonSerializable {
+    private string $name; // nom du produit avec option
+    private string  $couleur ; // couleur du produit avec option
+    
+    
+    public function __construct(string $name){
+        $this->name = $name;
+    }
+
+    public function JsonSerialize(): mixed{
+        return ["nom" => $this->name, "couleur" => $this->couleur];
+    }
+
+    /**
+     * Get the value of name
+     */ 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @return  self
+     */ 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get the value of couleur
+     */ 
+    public function getColor(): string
+    {
+        return $this->couleur;
+    }
+
+    /**
+     * Set the value of couleur
+     *
+     * @return  self
+     */ 
+    public function setColor(string $couleur): self
+    {
+        $this->couleur = $couleur;
+        return $this;
+    }
+
+
+}
+
+class option_taille extends option_couleur {
+    private string $taille; // taille du produit avec option
+
+    public function __construct(string $name){
+        parent::__construct($name);
+    }
+
+    public function JsonSerialize(): mixed{
+        return ["nom" => $this->getName(), "couleur" => $this->getColor(), "taille" => $this->getTaille()];
+    }
+
+    /**
+     * Get the value of taille
+     */ 
+    public function getTaille(): string
+    {
+        return $this->taille;
+    }
+
+    /**
+     * Set the value of taille
+     *
+     * @return  self
+     */ 
+    public function setTaille(string $taille): self
+    {
+        $this->taille = $taille;
+        return $this;
+    }
+}
+
 ?>

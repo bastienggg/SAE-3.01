@@ -16,9 +16,18 @@ class ProductController extends Controller {
 
    
     protected function processGetRequest(HttpRequest $request) {
+        // URI is .../products/id/{option}
+        $name  = $request->getParam("name");
+        if ($name){
+            return $this->products->findByName($name);
+        }
+
+
+
+        
         $id = $request->getId("id");
         if ($id){
-            // URI is .../products/{id}
+            // URI is .../products/name
             $p = $this->products->find($id);
             return $p==null ? false :  $p;
         }
@@ -33,6 +42,7 @@ class ProductController extends Controller {
     }
 
     protected function processPostRequest(HttpRequest $request) {
+        echo ($request);
         $json = $request->getJson();
         $obj = json_decode($json);
         if ($obj->id_categorie != 3){

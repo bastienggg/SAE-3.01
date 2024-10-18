@@ -61,7 +61,7 @@ abstract class Controller {
      *  Process the following URI requested using GET method
      *  
      *  /api/ressources
-     *  return all the ressources ojects (parameters may be used to filter the result)
+     *  return all the ressources objects (parameters may be used to filter the result)
      * 
      *  /api/ressources/{id}
      *  return the ressource object of id {id}
