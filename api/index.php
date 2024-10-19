@@ -1,7 +1,48 @@
 <?php
 require_once "Controller/ProductController.php";
+require_once "Repository/ProductRepository.php";
 require_once "Controller/CategorieController.php";
 require_once "Class/HttpRequest.php";
+
+
+if (!isset($_COOKIE['panier'])) {
+    // Initialize an empty panier if it doesn't exist
+    $panier = [];
+    setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // 30 days expiration
+} else {
+    // Retrieve the panier from the cookie
+    $panier = json_decode($_COOKIE['panier'], true);
+}
+
+// Example of adding a product to the panier
+function addTopanier($productId, $quantity) {
+    global $panier;
+    if (isset($panier[$productId])) {
+        $panier[$productId] += $quantity;
+    } else {
+        $panier[$productId] = $quantity;
+    }
+    setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
+}
+
+// Example of removing a product from the panier
+function removeFrompanier($productId) {
+    global $panier;
+    if (isset($panier[$productId])) {
+        unset($panier[$productId]);
+        setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
+    }
+}
+
+// Example of clearing the panier
+function clearpanier() {
+    global $panier;
+    $panier = [];
+    setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
+}
+
+
+
 
 
 /** IMPORTANT
@@ -50,5 +91,7 @@ if ( isset($router[$route]) ){ // si on a un controleur pour cette ressource
 }
 http_response_code(404); // si on a pas de controlleur pour traiter la requête -> 404
 die();
+
+
 
 ?>
