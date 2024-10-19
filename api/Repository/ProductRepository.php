@@ -127,9 +127,43 @@ class ProductRepository extends EntityRepository {
         return $res;
     }
 
+    //public function permet de retourner tout les Produits d'une catégorie
+    public function findAllByCategory($category): array {
+        $requete = $this->cnx->prepare("select * from Produit where id_categorie=:value");
+        $requete->bindParam(':value', $category);
+        $requete->execute();
+        $answer = $requete->fetchAll(PDO::FETCH_OBJ);
+        $res = [];
+        foreach($answer as $obj){
+            if ($obj->id_categorie != 3){
+                $p = new Taille($obj->id_produit);
+                $p->setName($obj->nom);
+                $p->setid_categorie($obj->id_categorie);
+                $p->setPrice($obj->prix);
+                $p->setImage($obj->image);
+                $p->setDesc($obj->description);
+                $p->setStock($obj->stock);
+                $p->setcolor($obj->couleur);
+                $p->setTaille($obj->taille);
+            }
+            else {
+                $p = new Product($obj->id_produit);
+                $p->setName($obj->nom);
+                $p->setid_categorie($obj->id_categorie);
+                $p->setPrice($obj->prix);
+                $p->setImage($obj->image);
+                $p->setDesc($obj->description);
+                $p->setStock($obj->stock);
+                $p->setcolor($obj->couleur);
+            }
+            array_push($res, $p);
+        }
+        return $res;
+    }
+
     // public function Insert($product)
     public function save($product){
-        $requete = $this->cnx->prepare("insert into Produit (name, category) values (:name, :id_produit)");
+        $requete = $this->cnx->prepare("insert into Produit (nom, description, prix, couleur, taille, image, stock, id_categorie) values (:name, :id_produit)");
         $name = $product->getName();
         $idcat = $product->getid_produit();
         $requete->bindParam(':name', $name );
