@@ -163,7 +163,7 @@ class ProductRepository extends EntityRepository {
 
     // public function Insert($product)
     public function save($product){
-        $requete = $this->cnx->prepare("insert into Produit (nom, description, prix, couleur, taille, image, stock, id_categorie) values (:name, :id_produit)");
+        $requete = $this->cnx->prepare("insert into Produit (nom, description, prix, couleur, taille, image, stock, id_categorie ) values (:name, :id_produit)");
         $name = $product->getName();
         $idcat = $product->getid_produit();
         $requete->bindParam(':name', $name );
