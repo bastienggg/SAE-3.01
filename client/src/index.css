@@ -9,6 +9,11 @@
     --clr-white: 0 0% 100%;
     --clr-black: 0 0% 0%;
 
+    --clr-noir: 0, 0%, 10%;
+    --clr-gris: 0, 0%, 38%;
+    --clr-vert: 112, 100%, 22%;
+    --clr-bleu: 221, 100%, 16%;
+
     --ff: "Helvetica Neue", sans-serif;
   }
 

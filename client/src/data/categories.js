@@ -5,15 +5,15 @@ let CatégorieData = {};
 
 let fakeCategories = [
     {
-        id: 1,
-        nom: "Jean",
-    },
-    {
-        id: 2,
+        id_categorie: 1,
         nom: "Robe",
     },
     {
-        id: 3,
+        id_categorie: 2,
+        nom: "Sweat",
+    },
+    {
+        id_categorie: 3,
         nom: "Sac",
     }
 ];
