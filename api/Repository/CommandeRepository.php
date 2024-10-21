@@ -1,0 +1,148 @@
+<?php
+
+require_once("Repository/EntityRepository.php");
+require_once("Class/Commande.php");
+
+
+class CommandeRepository extends EntityRepository {
+
+    public function __construct(){
+        // appel au constructeur de la classe mère (va ouvrir la connexion à la bdd)
+        parent::__construct();
+    }
+
+
+
+    // public function permet de retourner un Categorie
+    public function find($id): ?Commande{
+        /*
+            La façon de faire une requête SQL ci-dessous est "meilleur" que celle vue
+            au précédent semestre (cnx->query). Notamment l'utilisation de bindParam
+            permet de vérifier que la valeur transmise est "safe" et de se prémunir
+            d'injection SQL.
+        */
+        $requete = $this->cnx->prepare("select * from Commande where id_order=:value"); // prepare la requête SQL
+        $requete->bindParam(':value', $id); // fait le lien entre le "tag" :value et la valeur de $id
+        $requete->execute(); // execute la requête
+        $answer = $requete->fetch(PDO::FETCH_OBJ);
+        
+        if ($answer==false) return null; // may be false if the sql request failed (wrong $id value for example)
+        
+        $p = new Commande($answer->id_order);
+        $p->setStatut($answer->statut);
+        $p->setDate($answer->date_arrivee);
+        $p->setIdclient($answer->id_client);
+        return $p;
+    }
+
+
+    // public function permet de retourner tout les Categories
+    public function findAll(): array {
+        $requete = $this->cnx->prepare("select * from Commande");
+        $requete->execute();
+        $answer = $requete->fetchAll(PDO::FETCH_OBJ);
+
+        $res = [];
+        foreach($answer as $obj){
+            $p = new Commande($obj->id_order);
+            $p->setStatut($obj->statut);
+            $p->setDate($obj->date_arrivee);
+            $p->setIdclient($obj->id_client);
+            array_push($res, $p);
+        }
+       
+        return $res;
+    }
+
+    // public function getOrderDetails($id_order): array {
+    //     $requete = $this->cnx->prepare("
+    //         SELECT cp.id_order, cp.id_product, cp.quantity, p.name, p.price 
+    //         FROM Commande_produit cp
+    //         JOIN Product p ON cp.id_product = p.id_product
+    //         WHERE cp.id_order = :id_order
+    //     ");
+    //     $requete->bindParam(':id_order', $id_order);
+    //     $requete->execute();
+    //     $answer = $requete->fetchAll(PDO::FETCH_OBJ);
+
+    //     $orderDetails = [];
+    //     foreach ($answer as $obj) {
+    //         $orderDetails[] = [
+    //             'id_order' => $obj->id_order,
+    //             'id_product' => $obj->id_product,
+    //             'quantity' => $obj->quantity,
+    //             'product_name' => $obj->name,
+    //             'product_price' => $obj->price
+    //         ];
+    //     }
+
+    //     return $orderDetails;
+    // }
+
+
+    public function getOrderDetailsById($id_order): ?Commande {
+        $requete = $this->cnx->prepare("
+            SELECT c.id_order, c.statut, c.date_arrivee, c.id_client, cp.id_product, cp.quantite, p.nom, p.prix
+            FROM Commande c
+            JOIN Commande_produit cp ON c.id_order = cp.id_commande
+            JOIN Product p ON cp.id_produit = p.id_produit
+            WHERE c.id_order = :id_order
+        ");
+        $requete->bindParam(':id_order', $id_order);
+        $requete->execute();
+        $answer = $requete->fetchAll(PDO::FETCH_OBJ);
+
+        if (empty($answer)) return null;
+
+        $commande = new Commande($answer[0]->id_order);
+        $commande->setStatut($answer[0]->statut);
+        $commande->setDate($answer[0]->date);
+        $commande->setIdclient($answer[0]->id_client);
+
+        $orderDetails = [];
+        foreach ($answer as $obj) {
+            $orderDetails[] = [
+                'id_product' => $obj->id_product,
+                'quantity' => $obj->quantity,
+                'product_name' => $obj->name,
+                'product_price' => $obj->price
+            ];
+        }
+
+        
+        return $orderDetails;
+    }
+
+    // public function Insert($commande)
+    public function save($commande){
+        $requete = $this->cnx->prepare("insert into Commande (statut, date, id_client) values (:statut, :date, :id_client)");
+        $statut = $commande->getStatut();
+        $date = $commande->getDate();
+        $id_client = $commande->getIdclient();
+        $requete->bindParam(':statut', $statut);
+        $requete->bindParam(':date', $date);
+        $requete->bindParam(':id_client', $id_client);
+        $answer = $requete->execute(); // an insert query returns true or false. $answer is a boolean.
+
+        if ($answer){
+            $id = $this->cnx->lastInsertId(); // retrieve the id of the last insert query
+            $commande->setId($id); // set the commande id to its real value.
+            return true;
+        }
+          
+        return false;
+    }
+
+    public function delete($id){
+        // Not implemented ! TODO when needed !
+        return false;
+    }
+
+    public function update($product){
+        // Not implemented ! TODO when needed !
+        return false;
+    }
+
+   
+    
+}

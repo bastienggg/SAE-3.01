@@ -2,75 +2,13 @@
 require_once "Controller/ProductController.php";
 require_once "Repository/ProductRepository.php";
 require_once "Controller/CategorieController.php";
+require_once "Repository/CategorieRepository.php";
+require_once "Controller/CommandeController.php";
+require_once "Repository/CommandeRepository.php";
 require_once "Class/HttpRequest.php";
 
 
-if (!isset($_COOKIE['panier'])) {
-    // Initialize an empty panier if it doesn't exist
-    $panier = [];
-    setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // 30 days expiration
-} else {
-    // Retrieve the panier from the cookie
-    $panier = json_decode($_COOKIE['panier'], true);
-}
 
-// Example of adding a product to the panier
-function addTopanier($productId, $quantity, $name, $price) {
-    global $panier; // Use the global variable
-
-    $productRepository = new ProductRepository();
-    $product = $productRepository->find($productId);
-    if ($product->getStock() < $quantity) {
-        throw new Exception("Not enough stock available");
-    }
-    
-    if (isset($panier[$productId])) {
-        $panier[$productId]['quantity'] += $quantity;
-    } else {
-        $panier[$productId] = [
-            'quantity' => $quantity,
-            'name' => $name,
-            'price' => $price
-        ];
-    }
-    setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
-}
-
-function updatequantity($productId, $quantity) {
-    global $panier;
-    $productRepository = new ProductRepository();
-    $product = $productRepository->find($productId);
-    if ($product->getStock() < $quantity) {
-        throw new Exception("Not enough stock available");
-    }
-    if (isset($panier[$productId])) {
-        $panier[$productId]['quantity'] = $quantity;
-        setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
-    }
-}
-
-
-
-// Example of removing a product from the panier
-function removeFrompanier($productId) {
-    global $panier;
-    if (isset($panier[$productId])) {
-        unset($panier[$productId]);
-        setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
-    }
-}
-
-// Example of clearing the panier
-function clearpanier() {
-    global $panier;
-    $panier = [];
-    setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
-}
-
-function getpanier() {
-    global $panier;
-    return $panier;
-}
 
 
 
@@ -99,7 +37,8 @@ function getpanier() {
  */
 $router = [
     "products" => new ProductController(),
-    "categories" => new CategorieController()
+    "categories" => new CategorieController(),
+    "commandes" => new CommandeController(),
 ];
 
 // objet HttpRequest qui contient toutes les infos utiles sur la requêtes (voir class/HttpRequest.php)
