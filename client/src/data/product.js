@@ -177,10 +177,10 @@ ProductData.fetchSizesByNameAndColor = async function (productName, productColor
             product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
         );
         const sizes = filteredProducts.map(product => product.taille).filter(taille => taille !== undefined);
-        return { taille: sizes };
+        return sizes;
     }
     const sizes = Array.isArray(data) ? data.map(product => product.taille).filter(taille => taille !== undefined) : [];
-    return { taille: sizes };
+    return sizes;
 }
 
 //retourne les produit par rapport au nom et a la taille
