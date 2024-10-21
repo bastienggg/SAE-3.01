@@ -70,11 +70,14 @@ let fakeProducts = [
     }
 ];
 
+
+//retourne un produit par son id
 ProductData.fetch = async function (id) {
     let data = await getRequest('products/' + id);
     return data == false ? fakeProducts.pop() : [data];
 }
 
+//retourne tous les produits
 ProductData.fetchAll = async function () {
     let data = await getRequest('products');
     if (data === false) {
@@ -89,34 +92,30 @@ ProductData.fetchAll = async function () {
     return data;
 }
 
+//retourne les produits par rapport a la barre de recherche
 ProductData.search = async function (searchString) {
-    let data = await getRequest('products?search=' + encodeURIComponent(searchString)); // This is not a real API endpoint
-    if (data === false) {
-        const searchLower = searchString.toLowerCase();
-        const filteredProducts = fakeProducts.filter(product =>
-            product.nom.toLowerCase().includes(searchLower) ||
-            product.description.toLowerCase().includes(searchLower) ||
-            product.couleur.toLowerCase().includes(searchLower)
-        );
-        const uniqueProducts = filteredProducts.reduce((acc, product) => {
-            if (!acc.some(p => p.nom.trim() === product.nom.trim())) {
-                acc.push(product);
-            }
-            return acc;
-        }, []);
-        return uniqueProducts;
-    }
-    const uniqueData = data.reduce((acc, product) => {
+    let data = await getRequest('products');
+
+    data = data === false ? fakeProducts : data;
+
+    const searchLower = searchString.toLowerCase();
+    const filteredProducts = data.filter(product =>
+        product.nom.toLowerCase().includes(searchLower) ||
+        product.description.toLowerCase().includes(searchLower) ||
+        product.couleur.toLowerCase().includes(searchLower)
+    );
+    const uniqueProducts = filteredProducts.reduce((acc, product) => {
         if (!acc.some(p => p.nom.trim() === product.nom.trim())) {
             acc.push(product);
         }
         return acc;
     }, []);
-    return uniqueData;
+    return uniqueProducts;
 }
 
+//retourne les produits par rapport a la categorie
 ProductData.fetchByCategory = async function (categoryId) {
-    let data = await getRequest('products?category=' + categoryId); // This is not a real API endpoint
+    let data = await getRequest('products?category=' + categoryId);
     if (data === false) {
         const filteredProducts = fakeProducts.filter(product => product.id_categorie === categoryId);
         const uniqueProducts = filteredProducts.reduce((acc, product) => {
@@ -130,8 +129,10 @@ ProductData.fetchByCategory = async function (categoryId) {
     return data;
 }
 
+
+//retourne les tailles par rapport au nom
 ProductData.fetchSizesByName = async function (productName) {
-    let data = await getRequest('products?name=' + encodeURIComponent(productName)); // This is not a real API endpoint
+    let data = await getRequest('products?name=' + productName); // This is not a real API endpoint
     if (data === false) {
         const filteredProducts = fakeProducts.filter(product => product.nom.trim() === productName.trim());
         const sizesAndNames = filteredProducts.map(product => ({ taille: product.taille, nom: product.nom })).filter(p => p.taille !== undefined);
@@ -153,8 +154,11 @@ ProductData.fetchSizesByName = async function (productName) {
     }); // Return unique sizes with product names as objects
 }
 
+
+
+//retourne les produit par rapport au nom et a la couleurs
 ProductData.fetchByNameAndColor = async function (productName, productColor) {
-    let data = await getRequest(`products?name=${encodeURIComponent(productName)}&color=${encodeURIComponent(productColor)}`); // This is not a real API endpoint
+    let data = await getRequest(`products?name=` + productName + `&color=` + productColor);
     if (data === false) {
         const filteredProducts = fakeProducts.filter(product =>
             product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
@@ -164,8 +168,9 @@ ProductData.fetchByNameAndColor = async function (productName, productColor) {
     return Array.isArray(data) && data.length > 0 ? data[0] : null;
 }
 
+//retourne les tailles par rapport au nom et a la couleur
 ProductData.fetchSizesByNameAndColor = async function (productName, productColor) {
-    let data = await getRequest(`products?name=${encodeURIComponent(productName)}&color=${encodeURIComponent(productColor)}`); // This is not a real API endpoint
+    let data = await getRequest(`products?name=` + productName + `&color=` + productColor);
     if (data === false) {
         const filteredProducts = fakeProducts.filter(product =>
             product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
@@ -177,8 +182,9 @@ ProductData.fetchSizesByNameAndColor = async function (productName, productColor
     return sizes.map(taille => ({ taille }));
 }
 
+//retourne les produit par rapport au nom et a la taille
 ProductData.fetchByNameAndSize = async function (productName, productSize) {
-    let data = await getRequest(`products?name=${encodeURIComponent(productName)}&size=${encodeURIComponent(productSize)}`); // This is not a real API endpoint
+    let data = await getRequest(`products?name=` + productName + `&size` + productSize);
     if (data === false) {
         const filteredProducts = fakeProducts.filter(product =>
             product.nom.trim() === productName.trim() && product.taille.trim() === productSize.trim()
@@ -188,24 +194,25 @@ ProductData.fetchByNameAndSize = async function (productName, productSize) {
     return Array.isArray(data) && data.length > 0 ? data[0] : null;
 }
 
-
+//retourne les couleurs par rapport au nom
 ProductData.fetchColorsByName = async function (productName) {
-    let data = await getRequest('products?name=' + encodeURIComponent(productName)); // This is not a real API endpoint
+    let data = await getRequest('products?name=' + productName);
     if (data === false) {
         const filteredProducts = fakeProducts.filter(product => product.nom.trim() === productName.trim());
         const colorsAndNames = filteredProducts.map(product => ({ couleur: product.couleur, nom: product.nom }));
         return [...new Set(colorsAndNames.map(c => c.couleur))].map(couleur => {
             const product = colorsAndNames.find(p => p.couleur === couleur);
             return { couleur, nom: product.nom };
-        }); // Return unique colors with product names as objects
+        });
     }
     const colorsAndNames = data.map(product => ({ couleur: product.couleur, nom: product.nom }));
     return [...new Set(colorsAndNames.map(c => c.couleur))].map(couleur => {
         const product = colorsAndNames.find(p => p.couleur === couleur);
         return { couleur, nom: product.nom };
-    }); // Return unique colors with product names as objects
+    });
 }
 
+//retourne les produit par rapport a la couleur
 ProductData.fetchById = async function (id) {
     let data = await getRequest('products/' + id);
     if (data === false) {

@@ -60,31 +60,7 @@ C.setupColorClickListener = function () {
     });
 };
 
-// Fonction pour configurer l'écouteur de clic sur les tailles
-C.setupSizeClickListener = function () {
-    document.querySelectorAll('#taille').forEach(function (element) {
-        element.addEventListener('click', async function () {
-            let size = this.dataset.taille;
-            let name = this.dataset.nom;
-            let color = this.dataset.color;
-            console.log('Taille cliquée:', size);
-            console.log('Nom cliqué:', name);
-            let data = await ProductData.fetchByNameAndSize(name, size);
-            data = Array.isArray(data) ? data : [data];
-            console.log('Produit récupéré:', data);
-            let html = FicheProductView.render(data);
-            C.renderHTML("#fiche-product", html);
 
-            let colors = await ProductData.fetchColorsByName(name);
-            console.log('Couleurs récupérées:', colors);
-            await C.handleProductColors(colors);
-
-            let sizes = await ProductData.fetchSizesByNameAndColor(name, color);
-            console.log('Tailles récupérées:', sizes);
-            await C.handleProductSizes(sizes);
-        });
-    });
-};
 
 // Fonction pour gérer les tailles de produit
 C.handleProductSizes = async function (sizes) {
@@ -92,7 +68,6 @@ C.handleProductSizes = async function (sizes) {
     let html = FicheProductSizeView.render(sizes);
     C.renderHTML("#fiche-product-size", html);
     C.setupColorClickListener();
-    C.setupSizeClickListener();
 };
 
 // Fonction pour gérer les couleurs de produit
@@ -101,7 +76,6 @@ C.handleProductColors = async function (colors) {
     let html = FicheProductColorView.render(colors);
     C.renderHTML("#fiche-product-color", html);
     C.setupColorClickListener();
-    C.setupSizeClickListener();
 };
 
 // Fonction pour gérer le clic sur un produit

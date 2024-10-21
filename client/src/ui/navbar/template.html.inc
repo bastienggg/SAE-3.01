@@ -58,7 +58,7 @@
     </svg>
     <input
       type="text"
-      class="border-solid border-black border-2 p-2 text-right w-4/12 m-4 text-xs sm:flex max-sm:hidden"
+      class="border-solid border-black border-2 p-2 text-right w-4/12 m-4 text-xs sm:flex max-sm:hidden active:text-left"
       placeholder="RECHERCHER"
       id="searchbar"
     />
