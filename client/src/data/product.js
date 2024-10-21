@@ -164,9 +164,9 @@ ProductData.fetchByNameAndColor = async function (productName, productColor) {
         const filteredProducts = fakeProducts.filter(product =>
             product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
         );
-        return filteredProducts.length > 0 ? filteredProducts[0] : null;
+        return filteredProducts;
     }
-    return Array.isArray(data) && data.length > 0 ? data[0] : null;
+    return data;
 }
 
 //retourne les tailles par rapport au nom et a la couleur
