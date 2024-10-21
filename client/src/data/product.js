@@ -216,10 +216,6 @@ ProductData.fetchColorsByName = async function (productName) {
 //retourne les produit par rapport a la couleur
 ProductData.fetchById = async function (id) {
     let data = await getRequest('products/' + id);
-    if (data === false) {
-        const filteredProducts = fakeProducts.filter(product => product.id_produit === id);
-        return filteredProducts;
-    }
-    return data;
+    return data == false ? fakeProducts.pop() : [data];
 }
 export { ProductData };
