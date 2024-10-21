@@ -58,6 +58,7 @@ C.setupColorClickListener = function () {
 
             let sizes = await ProductData.fetchSizesByNameAndColor(name, color);
             console.log('Tailles récupérées:', sizes);
+            console.log('fetch avec pour paramétre name:', name, 'et color:', color);
             await C.handleProductSizes(sizes);
         });
     });
