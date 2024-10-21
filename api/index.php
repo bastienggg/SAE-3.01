@@ -17,6 +17,13 @@ if (!isset($_COOKIE['panier'])) {
 // Example of adding a product to the panier
 function addTopanier($productId, $quantity, $name, $price) {
     global $panier; // Use the global variable
+
+    $productRepository = new ProductRepository();
+    $product = $productRepository->find($productId);
+    if ($product->getStock() < $quantity) {
+        throw new Exception("Not enough stock available");
+    }
+    
     if (isset($panier[$productId])) {
         $panier[$productId]['quantity'] += $quantity;
     } else {
@@ -28,6 +35,20 @@ function addTopanier($productId, $quantity, $name, $price) {
     }
     setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
 }
+
+function updatequantity($productId, $quantity) {
+    global $panier;
+    $productRepository = new ProductRepository();
+    $product = $productRepository->find($productId);
+    if ($product->getStock() < $quantity) {
+        throw new Exception("Not enough stock available");
+    }
+    if (isset($panier[$productId])) {
+        $panier[$productId]['quantity'] = $quantity;
+        setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
+    }
+}
+
 
 
 // Example of removing a product from the panier

@@ -21,7 +21,7 @@ class ProductController extends Controller {
         if ($name){
             $color  = $request->getParam("color");
             if ($color){
-                $temp = $this->products->findByName($name);
+                $temp = $this->products->findByNameColor($name);
                 foreach ($temp as $product) {
                 
                     if ($product->getColor() == $color) {
@@ -81,7 +81,9 @@ class ProductController extends Controller {
         $json = $request->getJson();
         $obj = json_decode($json);
         if ($obj->id_categorie != 3){
+            echo($obj->id_produit);
             $p = new Taille($obj->id_produit);
+
             $p->setName($obj->nom);
             $p->setid_categorie($obj->id_categorie);
             $p->setPrice($obj->prix);

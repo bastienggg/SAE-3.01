@@ -127,6 +127,39 @@ class ProductRepository extends EntityRepository {
         return $res;
     }
 
+    public function findByNameColor($name){
+        $requete = $this->cnx->prepare("select * from Produit where nom=:value");
+        $requete->bindParam(':value', $name);
+        $requete->execute();
+        $answer = $requete->fetchAll(PDO::FETCH_OBJ);
+        $res = [];
+        foreach ($answer as $obj){
+            if ($obj->id_categorie !=3){
+                $p = new Taille($obj->id_produit);
+                $p->setName($obj->nom);
+                $p->setid_categorie($obj->id_categorie);
+                $p->setPrice($obj->prix);
+                $p->setImage($obj->image);
+                $p->setDesc($obj->description);
+                $p->setStock($obj->stock);
+                $p->setcolor($obj->couleur);
+                $p->setTaille($obj->taille);
+            }
+            else {
+                $p = new Product($obj->id_produit);
+                $p->setName($obj->nom);
+                $p->setid_categorie($obj->id_categorie);
+                $p->setPrice($obj->prix);
+                $p->setImage($obj->image);
+                $p->setDesc($obj->description);
+                $p->setStock($obj->stock);
+                $p->setcolor($obj->couleur);
+            }
+            array_push($res, $p);
+        }
+        return $res;
+    }
+
     public function findByColor($color){
         $requete = $this->cnx->prepare("select id_categorie, nom, couleur, taille from Produit where couleur=:value");
         $requete->bindParam(':value', $color);
