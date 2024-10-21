@@ -16,7 +16,7 @@ if (!isset($_COOKIE['panier'])) {
 
 // Example of adding a product to the panier
 function addTopanier($productId, $quantity, $name, $price) {
-    global $panier;
+    global $panier; // Use the global variable
     if (isset($panier[$productId])) {
         $panier[$productId]['quantity'] += $quantity;
     } else {
@@ -44,6 +44,11 @@ function clearpanier() {
     global $panier;
     $panier = [];
     setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
+}
+
+function getpanier() {
+    global $panier;
+    return $panier;
 }
 
 

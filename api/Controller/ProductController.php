@@ -19,7 +19,42 @@ class ProductController extends Controller {
         // URI is .../products/id/{option}
         $name  = $request->getParam("name");
         if ($name){
+            $color  = $request->getParam("color");
+            if ($color){
+                $temp = $this->products->findByName($name);
+                foreach ($temp as $product) {
+                
+                    if ($product->getColor() == $color) {
+                        return $product;
+                    }
+
+                }
+                
+            }
+            $size  = $request->getParam("size");
+            if ($size){
+                $temp = $this->products->findBySize($size);
+                foreach ($temp as $product) {
+                
+                    if ($product->getTaille() == $size) {
+                        return $product;
+                    }
+
+                }
+                
+            }	
             return $this->products->findByName($name);
+            
+        }
+
+        $color  = $request->getParam("color");
+        if ($color){
+            return $this->products->findByColor($color);
+        }
+
+        $size  = $request->getParam("size");
+        if ($size){
+            return $this->products->findBySize($size);
         }
 
 

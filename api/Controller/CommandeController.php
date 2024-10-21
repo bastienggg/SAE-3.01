@@ -22,10 +22,7 @@ class CommandeController extends Controller {
             return $p==null ? false :  $p;
         }
         else{
-            // URI is .../categories
-            $cat = $request->getParam("category"); 
-            if ( $cat == false) // Si on ne demande pas une catégorie en particulier, on retourne toutes les catégories
-                return $this->Commande->findAll();
+            return $this->Commande->findAll();
 
         }
     }

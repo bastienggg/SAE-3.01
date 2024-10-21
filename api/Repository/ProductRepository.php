@@ -127,6 +127,58 @@ class ProductRepository extends EntityRepository {
         return $res;
     }
 
+    public function findByColor($color){
+        $requete = $this->cnx->prepare("select id_categorie, nom, couleur, taille from Produit where couleur=:value");
+        $requete->bindParam(':value', $color);
+        $requete->execute();
+        $answer = $requete->fetchAll(PDO::FETCH_OBJ);
+        $res = [];
+        
+        foreach ($answer as $obj){
+            if ($obj->id_categorie != 3){
+                $p = new option_taille($obj->nom);
+                $p->setName($obj->nom);
+                $p->setcolor($obj->couleur);
+                $p->setTaille($obj->taille);
+    
+                
+            }
+            else {
+                $p = new option_couleur($obj->nom);
+                $p->setName($obj->nom);
+                $p->setcolor($obj->couleur);
+            }
+            array_push($res, $p);
+        }
+        return $res;
+    }
+
+    public function findBySize($size){
+        $requete = $this->cnx->prepare("select id_categorie, nom, couleur, taille from Produit where taille=:value");
+        $requete->bindParam(':value', $size);
+        $requete->execute();
+        $answer = $requete->fetchAll(PDO::FETCH_OBJ);
+        $res = [];
+        
+        foreach ($answer as $obj){
+            if ($obj->id_categorie != 3){
+                $p = new option_taille($obj->nom);
+                $p->setName($obj->nom);
+                $p->setcolor($obj->couleur);
+                $p->setTaille($obj->taille);
+    
+                
+            }
+            else {
+                $p = new option_couleur($obj->nom);
+                $p->setName($obj->nom);
+                $p->setcolor($obj->couleur);
+            }
+            array_push($res, $p);
+        }
+        return $res;
+    }
+
     //public function permet de retourner tout les Produits d'une catégorie
     public function findAllByCategory($category): array {
         $requete = $this->cnx->prepare("select * from Produit where id_categorie=:value");
