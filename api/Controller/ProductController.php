@@ -21,15 +21,16 @@ class ProductController extends Controller {
         if ($name){
             $color  = $request->getParam("color");
             if ($color){
+                res = [];
                 $temp = $this->products->findByNameColor($name);
                 foreach ($temp as $product) {
-                
+                    
                     if ($product->getColor() == $color) {
-                        return $product;
+                        array_push($res, $product);
                     }
 
                 }
-                
+                return $res;
             }
             $size  = $request->getParam("size");
             if ($size){
