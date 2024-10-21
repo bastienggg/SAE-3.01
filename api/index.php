@@ -15,15 +15,20 @@ if (!isset($_COOKIE['panier'])) {
 }
 
 // Example of adding a product to the panier
-function addTopanier($productId, $quantity) {
+function addTopanier($productId, $quantity, $name, $price) {
     global $panier;
     if (isset($panier[$productId])) {
-        $panier[$productId] += $quantity;
+        $panier[$productId]['quantity'] += $quantity;
     } else {
-        $panier[$productId] = $quantity;
+        $panier[$productId] = [
+            'quantity' => $quantity,
+            'name' => $name,
+            'price' => $price
+        ];
     }
     setcookie('panier', json_encode($panier), time() + (86400 * 30), "/"); // Update the cookie
 }
+
 
 // Example of removing a product from the panier
 function removeFrompanier($productId) {
