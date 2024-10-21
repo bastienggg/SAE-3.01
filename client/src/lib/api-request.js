@@ -4,7 +4,7 @@
  */
 
 
-let API_URL = "../api";
+let API_URL = "../api/";
 
 
 /**
