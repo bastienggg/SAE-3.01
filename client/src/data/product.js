@@ -74,7 +74,7 @@ let fakeProducts = [
 //retourne un produit par son id
 ProductData.fetch = async function (id) {
     let data = await getRequest('products/' + id);
-    return data == false ? fakeProducts.pop() : [data];
+    return data === false ? fakeProducts.find(product => product.id_produit === id) : data;
 }
 
 //retourne tous les produits
@@ -164,10 +164,24 @@ ProductData.fetchByNameAndColor = async function (productName, productColor) {
         const filteredProducts = fakeProducts.filter(product =>
             product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
         );
-        return filteredProducts.length > 0 ? filteredProducts[0] : null;
+        return filteredProducts.length > 0 ? [filteredProducts[0]] : [];
     }
-    return Array.isArray(data) && data.length > 0 ? data[0] : null;
+    return Array.isArray(data) && data.length > 0 ? [data[0]] : [];
 }
+
+ProductData.fetchAllByNameAndColor = async function (productName, productColor) {
+
+    let data = await getRequest(`products?name=` + productName + `&color=` + productColor);
+
+    if (data === false) {
+        const filteredProducts = fakeProducts.filter(product =>
+            product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
+        );
+        return filteredProducts;
+    }
+    return Array.isArray(data) ? data : [];
+}
+
 
 //retourne les tailles par rapport au nom et a la couleur
 ProductData.fetchSizesByNameAndColor = async function (productName, productColor) {
@@ -176,11 +190,11 @@ ProductData.fetchSizesByNameAndColor = async function (productName, productColor
         const filteredProducts = fakeProducts.filter(product =>
             product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
         );
-        const sizes = filteredProducts.map(product => product.taille).filter(taille => taille !== undefined);
-        return sizes.map(taille => ({ taille }));
+        const sizes = filteredProducts.map(product => ({ taille: product.taille })).filter(p => p.taille !== undefined);
+        return sizes; // Return all available sizes as objects
     }
-    const sizes = data.map(product => product.taille).filter(taille => taille !== undefined);
-    return sizes.map(taille => ({ taille }));
+    const sizes = Array.isArray(data) ? data.map(product => ({ taille: product.taille })).filter(p => p.taille !== undefined) : [];
+    return sizes; // Return all available sizes as objects
 }
 
 //retourne les produit par rapport au nom et a la taille
@@ -216,10 +230,6 @@ ProductData.fetchColorsByName = async function (productName) {
 //retourne les produit par rapport a la couleur
 ProductData.fetchById = async function (id) {
     let data = await getRequest('products/' + id);
-    if (data === false) {
-        const filteredProducts = fakeProducts.filter(product => product.id_produit === id);
-        return filteredProducts;
-    }
-    return data;
+    return data === false ? [fakeProducts.pop()] : [data];
 }
 export { ProductData };

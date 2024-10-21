@@ -73,7 +73,7 @@
     <p
       class="hover:cursor-pointer active:font-extrabold uppercase max-sm:hidden"
     >
-      panier {{nb}}
+      panier
     </p>
   </div>
 </nav>

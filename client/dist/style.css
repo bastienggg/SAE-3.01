@@ -581,6 +581,10 @@ body {
   position: absolute;
 }
 
+.relative {
+  position: relative;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -595,6 +599,10 @@ body {
 
 .m-4 {
   margin: 1rem;
+}
+
+.m-6 {
+  margin: 1.5rem;
 }
 
 .m-8 {
@@ -625,6 +633,10 @@ body {
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .mt-5 {
@@ -811,6 +823,10 @@ body {
   padding: 0.25rem;
 }
 
+.p-14 {
+  padding: 3.5rem;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -876,6 +892,10 @@ body {
 
 .hover\:cursor-pointer:hover {
   cursor: pointer;
+}
+
+.active\:text-left:active {
+  text-align: left;
 }
 
 .active\:font-extrabold:active {

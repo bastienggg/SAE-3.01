@@ -53,6 +53,11 @@
     <div class="flex flex-col border-solid border-2 border-black p-6">
       <p class="text-xl">Couleur: {{couleur}} | 8062/310</p>
       <div class="flex flex-row gap-3 my-4" id="fiche-product-color"></div>
+      <p>
+        Ces tailles ne seront pas forcement disponible dans cette couleur
+        cependant elle seront disponibles dans une autre des couleurs
+        disponibles
+      </p>
       <div
         class="flex flex-row flex-wrap w-full items-center justify-center my-8 gap-4"
         id="fiche-product-size"
@@ -60,6 +65,9 @@
     </div>
     <div
       class="flex items-center justify-center p-4 border-solid border-2 border-black hover:cursor-pointer"
+      id="ajouter"
+      data-name="{{nom}}"
+      data-clr="{{couleur}}"
     >
       <p class="text-2xl uppercase text-center">Ajouter</p>
     </div>
@@ -73,6 +81,7 @@
         <h4 class="text-xl uppercase">{{nom}}</h4>
         <p class="text-l uppercase">{{prix}}€</p>
       </div>
+
       <div
         class="flex flex-row gap-2 overflow-y-hidden"
         id="fiche-product-color"
@@ -81,6 +90,9 @@
     <div class="flex flex-row w-full justify-between items-center">
       <p
         class="text-xl uppercase py-2 border-solid border-2 border-black w-3/4 text-center hover:cursor-pointer"
+        id="ajouter"
+        data-name="{{nom}}"
+        data-clr="{{couleur}}"
       >
         Ajouter
       </p>

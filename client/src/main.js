@@ -1,5 +1,6 @@
 import { ProductData } from "./data/product.js";
 import { CatégorieData } from "./data/categories.js";
+import { PanierData } from "./data/panier.js";
 
 import { ProductView } from "./ui/products/index.js";
 import { navView } from "./ui/navbar/index.js";
@@ -9,15 +10,21 @@ import { CategorieMenueView } from "./ui/categories-burger/index.js";
 import { FicheProductView } from "./ui/fiche-product/index.js";
 import { FicheProductColorView } from "./ui/fiche-product-color/index.js";
 import { FicheProductSizeView } from "./ui/fiche-product-size/index.js";
-
+import { selectionTailleView } from "./ui/popup-panier/index.js";
+import { ProductSizeView } from "./ui/product-sizes/index.js";
 let C = {};
+
 // Fonction pour rendre du HTML dans un élément sélectionné par un sélecteur
 C.renderHTML = function (selector, html) {
+    console.log('Appel de renderHTML avec selector:', selector, 'et html:', html);
     document.querySelector(selector).innerHTML = html;
 };
 
+
+
 // Fonction pour configurer l'écouteur de la barre de recherche
 C.setupSearchBarListener = function () {
+    console.log('Appel de setupSearchBarListener');
     document.getElementById('searchbar').addEventListener('input', async function () {
         let query = this.value;
         console.log('Requête de recherche:', query);
@@ -37,6 +44,7 @@ C.setupSearchBarListener = function () {
 
 // Fonction pour configurer l'écouteur de clic sur les couleurs
 C.setupColorClickListener = function () {
+    console.log('Appel de setupColorClickListener');
     document.querySelectorAll('#couleur').forEach(function (element) {
         element.addEventListener('click', async function () {
             let color = this.dataset.clr;
@@ -44,9 +52,9 @@ C.setupColorClickListener = function () {
             console.log('Couleur cliquée:', color);
             console.log('Nom cliqué:', name);
             let data = await ProductData.fetchByNameAndColor(name, color);
-            data = Array.isArray(data) ? data : [data];
             console.log('Produit récupéré:', data);
             let html = FicheProductView.render(data);
+            document.querySelector("#fiche-product").innerHTML = '';
             C.renderHTML("#fiche-product", html);
 
             let colors = await ProductData.fetchColorsByName(name);
@@ -55,16 +63,18 @@ C.setupColorClickListener = function () {
 
             let sizes = await ProductData.fetchSizesByNameAndColor(name, color);
             console.log('Tailles récupérées:', sizes);
+            console.log('fetch avec pour paramétre name:', name, 'et color:', color);
             await C.handleProductSizes(sizes);
+
+            C.setupAddButtonPanierListener();
+
         });
     });
 };
 
-
-
 // Fonction pour gérer les tailles de produit
 C.handleProductSizes = async function (sizes) {
-    console.log('Gestion des tailles de produit:', sizes);
+    console.log('Appel de handleProductSizes avec sizes:', sizes);
     let html = FicheProductSizeView.render(sizes);
     C.renderHTML("#fiche-product-size", html);
     C.setupColorClickListener();
@@ -72,7 +82,7 @@ C.handleProductSizes = async function (sizes) {
 
 // Fonction pour gérer les couleurs de produit
 C.handleProductColors = async function (colors) {
-    console.log('Gestion des couleurs de produit:', colors);
+    console.log('Appel de handleProductColors avec colors:', colors);
     let html = FicheProductColorView.render(colors);
     C.renderHTML("#fiche-product-color", html);
     C.setupColorClickListener();
@@ -80,7 +90,7 @@ C.handleProductColors = async function (colors) {
 
 // Fonction pour gérer le clic sur un produit
 C.handleProductClick = async function (productId, productName) {
-    console.log('Gestion du clic sur le produit avec productId:', productId, 'productName:', productName);
+    console.log('Appel de handleProductClick avec productId:', productId, 'et productName:', productName);
     let productData = await ProductData.fetchById(productId);
     console.log('Données du produit récupérées:', productData);
     let html = FicheProductView.render(productData);
@@ -97,11 +107,71 @@ C.handleProductClick = async function (productId, productName) {
 
         await C.handleProductSizes(sizes);
         await C.handleProductColors(colors);
+        C.setupAddButtonPanierListener();
     }
 };
 
+
+// Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "tailles"
+C.setupSizeClickListener = function () {
+    console.log('Appel de setupSizeClickListener');
+    document.getElementById('tailles').addEventListener('click', function (event) {
+        let target = event.target;
+        if (target && target.dataset.id) {
+            console.log('Taille cliquée avec data-id:', target.dataset.id);
+            let Id = Number(target.dataset.id);
+            let data = ProductData.fetch(Id);
+            console.log('Produit récupéré:', data);
+
+            PanierData.add(data);
+            console.log('Produit ajouté au panier:', data);
+            console.log(PanierData.getAll());
+
+            document.querySelector("#selection-size").innerHTML = '';
+        }
+    });
+};
+
+
+
+// Fonction pour récupérer les tailles disponibles pour une couleur de produit en utilisant l'ID du produit
+C.getAvailableSizesByProductId = async function (productName, productColor) {
+    console.log('Appel de getAvailableSizesByProductId avec Name', productName + ' et productColor:', productColor);
+    let data = await ProductData.fetchAllByNameAndColor(productName, productColor);
+    console.log('Tailles récupérées:', data);
+
+    let html = selectionTailleView.render();
+    C.renderHTML("#selection-size", html);
+
+    let html2 = ProductSizeView.render(data);
+    C.renderHTML("#tailles", html2);
+
+    C.setupSizeClickListener();
+};
+
+
+
+// Fonction pour configurer l'écouteur de clic pour l'élément avec l'ID "ajouter"
+C.setupAddButtonPanierListener = function () {
+    console.log('Appel de setupAddButtonListener');
+    document.getElementById('ajouter').addEventListener('click', function () {
+        console.log('Bouton "ajouter" cliqué');
+        let button = this;
+        let dataName = button.dataset.name;
+        let dataColor = button.dataset.clr;
+        console.log('data-name du bouton cliqué:', dataName);
+        console.log('data-clr du bouton cliqué:', dataColor);
+        if (!button.dataset.clicked) {
+            button.dataset.clicked = true;
+            C.getAvailableSizesByProductId(dataName, dataColor);
+        }
+    });
+};
+
+
 // Fonction pour configurer l'écouteur de clic sur les produits
 C.setupProductClickListener = function () {
+    console.log('Appel de setupProductClickListener');
     document.querySelectorAll('.product').forEach(function (element) {
         element.addEventListener('click', async function () {
             console.log('Dataset du produit:', this.dataset);
@@ -114,6 +184,7 @@ C.setupProductClickListener = function () {
 
 // Fonction pour récupérer le dataset d'un produit cliqué
 C.getProductDataset = function (selector) {
+    console.log('Appel de getProductDataset avec selector:', selector);
     document.querySelectorAll(selector).forEach(function (element) {
         element.addEventListener('click', function () {
             console.log('Dataset du produit:', this.dataset);
@@ -123,6 +194,7 @@ C.getProductDataset = function (selector) {
 
 // Fonction pour ajouter un écouteur de clic à tous les éléments correspondant au sélecteur
 C.addClickListener = function (selector, handler) {
+    console.log('Appel de addClickListener avec selector:', selector, 'et handler:', handler);
     document.querySelectorAll(selector).forEach(function (element) {
         element.addEventListener('click', handler);
     });
@@ -130,6 +202,7 @@ C.addClickListener = function (selector, handler) {
 
 // Fonction pour configurer l'écouteur de clic pour le bouton d'accueil
 C.setupHomeButtonListener = function () {
+    console.log('Appel de setupHomeButtonListener');
     document.getElementById('home-btn').addEventListener('click', function () {
         console.log('Bouton d\'accueil cliqué');
         document.querySelector("#main").style.display = 'flex';
@@ -140,6 +213,7 @@ C.setupHomeButtonListener = function () {
 
 // Fonction pour configurer l'écouteur de clic pour le bouton de fermeture du menu
 C.setupCloseMenuListener = function () {
+    console.log('Appel de setupCloseMenuListener');
     document.getElementById('close-menu').addEventListener('click', function () {
         console.log('Bouton de fermeture du menu cliqué');
         C.renderHTML("#burger", '');
@@ -148,6 +222,7 @@ C.setupCloseMenuListener = function () {
 
 // Fonction pour gérer le clic sur un filtre de catégorie
 C.handler_clickOnFilter = async function (ev) {
+    console.log('Appel de handler_clickOnFilter avec ev:', ev);
     console.log('Filtre cliqué', ev.target.dataset.id);
     if (ev.target.dataset.id != undefined) {
         let value = Number(ev.target.dataset.id);
@@ -167,7 +242,7 @@ C.handler_clickOnFilter = async function (ev) {
 
 // Fonction pour charger les catégories et configurer les écouteurs de clic pour les filtres
 C.loadCategories = async function () {
-    console.log('Chargement des catégories');
+    console.log('Appel de loadCategories');
     let data = await CatégorieData.fetchAll();
     console.log('Catégories récupérées:', data);
     let html = CatégorieView.render(data);
@@ -178,6 +253,7 @@ C.loadCategories = async function () {
 
 // Fonction pour configurer les écouteurs d'événements pour le menu burger et les catégories
 C.setupEventListeners = function () {
+    console.log('Appel de setupEventListeners');
     document.getElementById('burger-logo').addEventListener('click', async function () {
         console.log('Logo du burger cliqué');
         let template = MenuBurgerView.render();
@@ -214,7 +290,7 @@ C.setupEventListeners = function () {
 
 // Fonction pour charger tous les produits et configurer les écouteurs de clic pour les produits
 C.loadProducts = async function () {
-    console.log('Chargement des produits');
+    console.log('Appel de loadProducts');
     document.querySelector("#main").style.display = 'none';
     let data = await ProductData.fetchAll();
     console.log('Produits récupérés:', data);
@@ -225,7 +301,7 @@ C.loadProducts = async function () {
 
 // Fonction pour initialiser l'application en configurant les écouteurs d'événements et en chargeant les vues initiales
 C.init = async function () {
-    console.log('Initialisation de l\'application');
+    console.log('Appel de init');
     let html2 = navView.render();
     C.renderHTML("#nav", html2);
     C.setupSearchBarListener();
