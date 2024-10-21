@@ -23,6 +23,31 @@ C.renderHTML = function (selector, html) {
     document.querySelector(selector).innerHTML = html;
 };
 
+// Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "delete-from-panier"
+C.setupDeleteFromPanierClickListener = function () {
+    console.log('Appel de setupDeleteFromPanierClickListener');
+    document.querySelectorAll('#delete-from-panier').forEach(function (element) {
+        element.addEventListener('click', function () {
+            console.log('Élément "delete-from-panier" cliqué');
+            // Ajoutez ici le code pour gérer la suppression d'un produit du panier
+            let productId = Number(this.dataset.id);
+            console.log('ID du produit à supprimer:', productId);
+            PanierData.deleteById(productId);
+
+            C.renderHTML("#products-panier", '');
+
+            let panier = PanierData.getAll() || [];
+            console.log('Produits du panier:', panier);
+            let html2 = ProductPanierView.render(panier);
+            C.renderHTML("#products-panier", html2);
+
+            // Reconfigurer les écouteurs de clic après la mise à jour du panier
+            C.setupDeleteFromPanierClickListener();
+        });
+    });
+};
+
+
 // Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "panier"
 C.setupPanierClickListener = function () {
     console.log('Appel de setupPanierClickListener');
@@ -42,7 +67,8 @@ C.setupPanierClickListener = function () {
         let html2 = ProductPanierView.render(panier);
         C.renderHTML("#products-panier", html2);
 
-        // Ajoutez ici le code pour gérer le clic sur le panier
+        C.setupDeleteFromPanierClickListener();
+
     });
 };
 

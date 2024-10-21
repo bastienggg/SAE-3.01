@@ -64,7 +64,7 @@
       ></div>
     </div>
     <div
-      class="flex items-center justify-center p-4 border-solid border-2 border-black hover:cursor-pointer"
+      class="flex items-center justify-center p-4 border-solid border-2 border-black text-white bg-black hover:text-black hover:bg-white hover:cursor-pointer"
       id="ajouter"
       data-name="{{nom}}"
       data-clr="{{couleur}}"
@@ -89,7 +89,7 @@
     </div>
     <div class="flex flex-row w-full justify-between items-center">
       <p
-        class="text-xl uppercase py-2 border-solid border-2 border-black w-3/4 text-center hover:cursor-pointer"
+        class="text-xl uppercase py-2 border-solid border-2 border-black w-3/4 text-center hover:cursor-pointer text-white bg-black hover:text-black hover:bg-white"
         id="ajouter"
         data-name="{{nom}}"
         data-clr="{{couleur}}"
