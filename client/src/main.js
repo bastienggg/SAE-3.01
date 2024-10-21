@@ -12,6 +12,9 @@ import { FicheProductColorView } from "./ui/fiche-product-color/index.js";
 import { FicheProductSizeView } from "./ui/fiche-product-size/index.js";
 import { selectionTailleView } from "./ui/popup-panier/index.js";
 import { ProductSizeView } from "./ui/product-sizes/index.js";
+import { panierView } from "./ui/panier/index.js";
+import { ProductPanierView } from "./ui/product-panier/index.js";
+
 let C = {};
 
 // Fonction pour rendre du HTML dans un élément sélectionné par un sélecteur
@@ -20,10 +23,34 @@ C.renderHTML = function (selector, html) {
     document.querySelector(selector).innerHTML = html;
 };
 
+// Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "panier"
+C.setupPanierClickListener = function () {
+    console.log('Appel de setupPanierClickListener');
+    document.getElementById('panier').addEventListener('click', function () {
+        console.log('Panier cliqué');
+        C.renderHTML("#main-articles", '');
+        document.querySelector("#main").style.display = 'none';
+        C.renderHTML("#fiche-product", '');
+        C.renderHTML(".categorie", '');
+
+
+        let html = panierView.render();
+        C.renderHTML("#panier-container", html);
+
+        let panier = PanierData.getAll() || [];
+        console.log('Produits du panier:', panier);
+        let html2 = ProductPanierView.render(panier);
+        C.renderHTML("#products-panier", html2);
+
+        // Ajoutez ici le code pour gérer le clic sur le panier
+    });
+};
+
 
 
 // Fonction pour configurer l'écouteur de la barre de recherche
 C.setupSearchBarListener = function () {
+    C.renderHTML("#panier-container", '');
     console.log('Appel de setupSearchBarListener');
     document.getElementById('searchbar').addEventListener('input', async function () {
         let query = this.value;
@@ -34,9 +61,13 @@ C.setupSearchBarListener = function () {
             document.querySelector("#main").style.display = 'none';
             document.querySelector("#fiche-product").innerHTML = '';
             let html = ProductView.render(results);
+            C.renderHTML("#panier-container", '');
+
             C.renderHTML("#main-articles", html);
             C.setupProductClickListener();
         } else {
+            C.renderHTML("#panier-container", '');
+
             C.renderHTML("#main-articles", '');
         }
     });
@@ -56,6 +87,8 @@ C.setupColorClickListener = function () {
             let html = FicheProductView.render(data);
             document.querySelector("#fiche-product").innerHTML = '';
             C.renderHTML("#fiche-product", html);
+            C.renderHTML("#panier-container", '');
+
 
             let colors = await ProductData.fetchColorsByName(name);
             console.log('Couleurs récupérées:', colors);
@@ -95,6 +128,7 @@ C.handleProductClick = async function (productId, productName) {
     console.log('Données du produit récupérées:', productData);
     let html = FicheProductView.render(productData);
     C.renderHTML("#main-articles", '');
+    C.renderHTML("#panier-container", '');
     C.renderHTML("#fiche-product", html);
 
     if (productName) {
@@ -113,14 +147,15 @@ C.handleProductClick = async function (productId, productName) {
 
 
 // Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "tailles"
-C.setupSizeClickListener = function () {
+C.setupSizeClickListener = async function () {
     console.log('Appel de setupSizeClickListener');
-    document.getElementById('tailles').addEventListener('click', function (event) {
+    document.getElementById('tailles').addEventListener('click', async function (event) {
         let target = event.target;
         if (target && target.dataset.id) {
             console.log('Taille cliquée avec data-id:', target.dataset.id);
             let Id = Number(target.dataset.id);
-            let data = ProductData.fetch(Id);
+            let data = await ProductData.fetch(Id);
+            data = data ? { ...data } : {};
             console.log('Produit récupéré:', data);
 
             PanierData.add(data);
@@ -128,6 +163,8 @@ C.setupSizeClickListener = function () {
             console.log(PanierData.getAll());
 
             document.querySelector("#selection-size").innerHTML = '';
+            C.renderHTML("#panier-container", '');
+
         }
     });
 };
@@ -208,6 +245,8 @@ C.setupHomeButtonListener = function () {
         document.querySelector("#main").style.display = 'flex';
         C.renderHTML("#main-articles", '');
         C.renderHTML(".categorie", '');
+        C.renderHTML("#panier-container", '');
+
     });
 };
 
@@ -234,6 +273,8 @@ C.handler_clickOnFilter = async function (ev) {
         } else {
             let html = ProductView.render(data);
             C.renderHTML("#fiche-product", '');
+            C.renderHTML("#panier-container", '');
+
             C.renderHTML("#main-articles", html);
             C.setupProductClickListener();
         }
@@ -246,6 +287,8 @@ C.loadCategories = async function () {
     let data = await CatégorieData.fetchAll();
     console.log('Catégories récupérées:', data);
     let html = CatégorieView.render(data);
+    C.renderHTML("#panier-container", '');
+
     C.renderHTML(".categorie", html);
     C.addClickListener('#filters', C.handler_clickOnFilter);
     C.setupProductClickListener();
@@ -280,6 +323,8 @@ C.setupEventListeners = function () {
                 console.log('Produits récupérés:', data);
                 let html = ProductView.render(data);
                 C.renderHTML("#fiche-product", '');
+                C.renderHTML("#panier-container", '');
+
                 C.renderHTML("#main-articles", html);
                 C.loadCategories();
             }
@@ -292,6 +337,8 @@ C.setupEventListeners = function () {
 C.loadProducts = async function () {
     console.log('Appel de loadProducts');
     document.querySelector("#main").style.display = 'none';
+    C.renderHTML("#panier-container", '');
+
     let data = await ProductData.fetchAll();
     console.log('Produits récupérés:', data);
     let html = ProductView.render(data);
@@ -307,6 +354,7 @@ C.init = async function () {
     C.setupSearchBarListener();
     C.setupEventListeners();
     C.setupHomeButtonListener();
+    C.setupPanierClickListener();
 };
 
 C.init();

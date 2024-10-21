@@ -6,14 +6,15 @@ import { getRequest } from '../lib/api-request.js';
 let PanierData = [];
 
 PanierData.add = function (item) {
-    if (!this.items) {
-        this.items = [];
+    if (typeof item === 'object' && item !== null) {
+        this.push(item);
+    } else {
+        throw new Error('Item must be an object');
     }
-    this.items.push(item);
 };
 
 PanierData.getAll = function () {
-    return this.items || [];
+    return [...this];
 };
 
 

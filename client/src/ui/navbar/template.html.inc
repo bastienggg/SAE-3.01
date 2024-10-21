@@ -72,6 +72,7 @@
     </p>
     <p
       class="hover:cursor-pointer active:font-extrabold uppercase max-sm:hidden"
+      id="panier"
     >
       panier
     </p>
