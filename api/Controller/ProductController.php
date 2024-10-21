@@ -21,7 +21,7 @@ class ProductController extends Controller {
         if ($name){
             $color  = $request->getParam("color");
             if ($color){
-                $temp = $this->products->ffindByNameColor($name);
+                $temp = $this->products->findByNameColor($name);
                 foreach ($temp as $product) {
                 
                     if ($product->getColor() == $color) {
