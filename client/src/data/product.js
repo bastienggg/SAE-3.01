@@ -180,6 +180,7 @@ ProductData.fetchSizesByNameAndColor = async function (productName, productColor
         return sizes.map(taille => ({ taille }));
     }
     const sizes = data.map(product => product.taille).filter(taille => taille !== undefined);
+    console.log(sizes.map(taille => ({ taille })));
     return sizes.map(taille => ({ taille }));
 }
 
