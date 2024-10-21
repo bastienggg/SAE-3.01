@@ -159,6 +159,7 @@ ProductData.fetchSizesByName = async function (productName) {
 //retourne les produit par rapport au nom et a la couleurs
 ProductData.fetchByNameAndColor = async function (productName, productColor) {
     let data = await getRequest(`products?name=` + productName + `&color=` + productColor);
+
     if (data === false) {
         const filteredProducts = fakeProducts.filter(product =>
             product.nom.trim() === productName.trim() && product.couleur.trim() === productColor.trim()
