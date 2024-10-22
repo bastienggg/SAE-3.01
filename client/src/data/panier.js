@@ -19,6 +19,48 @@ PanierData.getAll = function () {
     return [...this.items];
 };
 
+PanierData.getUniqueItemsWithCount = function () {
+    const uniqueItems = [];
+    const itemCounts = new Map();
+
+    for (const item of this.items) {
+        if (itemCounts.has(item.id_produit)) {
+            itemCounts.set(item.id_produit, itemCounts.get(item.id_produit) + 1);
+        } else {
+            itemCounts.set(item.id_produit, item.nombre || 1);
+            uniqueItems.push({ ...item });
+        }
+    }
+
+    for (const uniqueItem of uniqueItems) {
+        uniqueItem.nombre = itemCounts.get(uniqueItem.id_produit);
+    }
+
+    return uniqueItems;
+};
+
+PanierData.incrementItemCount = function (id_produit) {
+    const item = this.items.find(item => item.id_produit === id_produit);
+    if (item) {
+        item.nombre = (item.nombre || 1) + 1;
+    } else {
+        throw new Error('Item not found');
+    }
+};
+
+PanierData.decrementItemCount = function (id_produit) {
+    const item = this.items.find(item => item.id_produit === id_produit);
+    if (item) {
+        if (item.nombre > 1) {
+            item.nombre -= 1;
+        } else {
+            throw new Error('Item count cannot be less than 1');
+        }
+    } else {
+        throw new Error('Item not found');
+    }
+};
+
 PanierData.deleteById = function (id) {
     const index = this.items.findIndex(item => item.id_produit === id);
     if (index !== -1) {
@@ -28,8 +70,19 @@ PanierData.deleteById = function (id) {
     }
 };
 
+PanierData.getTotalPrice = function () {
+    let total = 0;
+    for (const item of this.items) {
+        total += item.prix || 0;
+    }
+    return total;
+};
 
-
+PanierData.toFormData = function () {
+    const formData = new FormData();
+    formData.append('items', JSON.stringify(this.items));
+    return formData;
+}
 
 
 export { PanierData };

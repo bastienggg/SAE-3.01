@@ -84,7 +84,7 @@
 
       <div
         class="flex flex-row gap-2 overflow-y-hidden"
-        id="fiche-product-color"
+        id="fiche-product-color-mobil"
       ></div>
     </div>
     <div class="flex flex-row w-full justify-between items-center">

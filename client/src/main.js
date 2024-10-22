@@ -40,9 +40,12 @@ C.setupDeleteFromPanierClickListener = function () {
             console.log('Produits du panier:', panier);
             let html2 = ProductPanierView.render(panier);
             C.renderHTML("#products-panier", html2);
+            console.log('Prix totale du panier:', PanierData.getTotalPrice());
 
             // Reconfigurer les écouteurs de clic après la mise à jour du panier
             C.setupDeleteFromPanierClickListener();
+            C.setupMinusProductClickListener();
+            C.setupPlusProductClickListener();
         });
     });
 };
@@ -51,24 +54,77 @@ C.setupDeleteFromPanierClickListener = function () {
 // Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "panier"
 C.setupPanierClickListener = function () {
     console.log('Appel de setupPanierClickListener');
-    document.getElementById('panier').addEventListener('click', function () {
-        console.log('Panier cliqué');
-        C.renderHTML("#main-articles", '');
-        document.querySelector("#main").style.display = 'none';
-        C.renderHTML("#fiche-product", '');
-        C.renderHTML(".categorie", '');
+    document.querySelectorAll('#panier').forEach(function (element) {
+        element.addEventListener('click', function () {
+            C.renderHTML("#burger", '');
+            console.log('Panier cliqué');
+            C.renderHTML("#main-articles", '');
+            document.querySelector("#main").style.display = 'none';
+            C.renderHTML("#fiche-product", '');
+            C.renderHTML(".categorie", '');
+
+            let html = panierView.render();
+            C.renderHTML("#panier-container", html);
+
+            let panier = PanierData.getUniqueItemsWithCount();
+            console.log('Produits du panier:', panier);
+            let html2 = ProductPanierView.render(panier);
+            C.renderHTML("#products-panier", html2);
+            console.log('Prix totale du panier:', PanierData.getTotalPrice());
+            console.log('Tout les produit avec nombre', PanierData.getUniqueItemsWithCount());
+            // console.log('compte darticles', PanierData.getItemCountById(5));
 
 
-        let html = panierView.render();
-        C.renderHTML("#panier-container", html);
+            C.setupDeleteFromPanierClickListener();
+            C.setupMinusProductClickListener();
+            C.setupPlusProductClickListener();
+        });
+    });
+};
 
-        let panier = PanierData.getAll() || [];
-        console.log('Produits du panier:', panier);
-        let html2 = ProductPanierView.render(panier);
-        C.renderHTML("#products-panier", html2);
+// Fonction pour configurer l'écouteur de clic sur les éléments avec l'ID "plus-product"
+C.setupPlusProductClickListener = function () {
+    console.log('Appel de setupPlusProductClickListener');
+    document.querySelectorAll('#plus-product').forEach(function (element) {
+        element.addEventListener('click', function () {
+            console.log('Élément "plus-product" cliqué');
+            let productId = Number(this.dataset.id);
+            PanierData.incrementItemCount(productId);
+            console.log('Produit avec ID', productId, 'incrémenté de 1');
 
-        C.setupDeleteFromPanierClickListener();
+            let panier = PanierData.getUniqueItemsWithCount();
+            console.log('Produits du panier:', panier);
+            let html2 = ProductPanierView.render(panier);
+            C.renderHTML("#products-panier", '');
+            C.renderHTML("#products-panier", html2);
 
+            C.setupDeleteFromPanierClickListener();
+            C.setupMinusProductClickListener();
+            C.setupPlusProductClickListener();
+        });
+    });
+};
+
+// Fonction pour configurer l'écouteur de clic sur les éléments avec l'ID "moin-product"
+C.setupMinusProductClickListener = function () {
+    console.log('Appel de setupMinusProductClickListener');
+    document.querySelectorAll('#moin-product').forEach(function (element) {
+        element.addEventListener('click', function () {
+            console.log('Élément "moin-product" cliqué');
+            let productId = Number(this.dataset.id);
+            PanierData.decrementItemCount(productId);
+            console.log('Produit avec ID', productId, 'décrémenté de 1');
+
+            let panier = PanierData.getUniqueItemsWithCount();
+            console.log('Produits du panier:', panier);
+            let html2 = ProductPanierView.render(panier);
+            C.renderHTML("#products-panier", '');
+            C.renderHTML("#products-panier", html2);
+
+            C.setupDeleteFromPanierClickListener();
+            C.setupPlusProductClickListener();
+            C.setupMinusProductClickListener();
+        });
     });
 };
 
@@ -104,6 +160,7 @@ C.setupColorClickListener = function () {
     console.log('Appel de setupColorClickListener');
     document.querySelectorAll('#couleur').forEach(function (element) {
         element.addEventListener('click', async function () {
+
             let color = this.dataset.clr;
             let name = this.dataset.nom;
             console.log('Couleur cliquée:', color);
@@ -144,6 +201,7 @@ C.handleProductColors = async function (colors) {
     console.log('Appel de handleProductColors avec colors:', colors);
     let html = FicheProductColorView.render(colors);
     C.renderHTML("#fiche-product-color", html);
+    C.renderHTML("#fiche-product-color-mobil", html);
     C.setupColorClickListener();
 };
 
@@ -217,17 +275,19 @@ C.getAvailableSizesByProductId = async function (productName, productColor) {
 // Fonction pour configurer l'écouteur de clic pour l'élément avec l'ID "ajouter"
 C.setupAddButtonPanierListener = function () {
     console.log('Appel de setupAddButtonListener');
-    document.getElementById('ajouter').addEventListener('click', function () {
-        console.log('Bouton "ajouter" cliqué');
-        let button = this;
-        let dataName = button.dataset.name;
-        let dataColor = button.dataset.clr;
-        console.log('data-name du bouton cliqué:', dataName);
-        console.log('data-clr du bouton cliqué:', dataColor);
-        if (!button.dataset.clicked) {
-            button.dataset.clicked = true;
-            C.getAvailableSizesByProductId(dataName, dataColor);
-        }
+    document.querySelectorAll('#ajouter').forEach(function (element) {
+        element.addEventListener('click', function () {
+            console.log('Bouton "ajouter" cliqué');
+            let button = this;
+            let dataName = button.dataset.name;
+            let dataColor = button.dataset.clr;
+            console.log('data-name du bouton cliqué:', dataName);
+            console.log('data-clr du bouton cliqué:', dataColor);
+            if (!button.dataset.clicked) {
+                button.dataset.clicked = true;
+                C.getAvailableSizesByProductId(dataName, dataColor);
+            }
+        });
     });
 };
 
@@ -327,6 +387,7 @@ C.setupEventListeners = function () {
         console.log('Logo du burger cliqué');
         let template = MenuBurgerView.render();
         C.renderHTML("#burger", template);
+        C.setupPanierClickListener();
 
         let categories = await CatégorieData.fetchAll();
         console.log('Catégories récupérées pour le menu burger:', categories);
