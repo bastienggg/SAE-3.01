@@ -15,9 +15,12 @@ class CommandeController extends Controller {
 
     protected function processGetRequest(HttpRequest $request) {
         // URI is .../commandes/id/{option}
+        
         $id = $request->getId("id");
         if ($id){
-            
+            if ($request->getParam("details")) {
+                return $this->commandes->getOrderDetailsById($id);
+            }
             $c = $this->commandes->find($id);
             return $c == null ? false : $c;
         } else {
@@ -39,4 +42,4 @@ class CommandeController extends Controller {
         return $ok ? $c : false;
     }
 }
-?>
+

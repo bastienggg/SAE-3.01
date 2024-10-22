@@ -100,6 +100,7 @@ class Commande implements JsonSerializable {
         return $this;
     }
 
+    
 
 
     
@@ -108,6 +109,31 @@ class Commande implements JsonSerializable {
 
 }
 
+class CommandeDetail extends Commande {
+    private array $orderDetails;
 
+    public function __construct(int $id){
+        parent::__construct($id);
+    }
 
-?>
+    public function JsonSerialize(): mixed{
+        return ["id" => $this->getId(), "statut" => $this->getStatut(), "date" => $this->getdate(), "id_client" => $this->getIdClient(), "orderDetails" => $this->orderDetails];
+    }
+
+    /**
+     * Get the value of orderDetails
+     */ 
+    public function getOrderDetails(): array
+    {
+        return $this->orderDetails;
+    }
+
+    /**
+     * Set the value of orderDetails
+     */ 
+    public function setOrderDetails(array $orderDetails): self
+    {
+        $this->orderDetails = $orderDetails;
+        return $this;
+    }
+}

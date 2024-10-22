@@ -54,38 +54,14 @@ class CommandeRepository extends EntityRepository {
         return $res;
     }
 
-    // public function getOrderDetails($id_order): array {
-    //     $requete = $this->cnx->prepare("
-    //         SELECT cp.id_order, cp.id_product, cp.quantity, p.name, p.price 
-    //         FROM Commande_produit cp
-    //         JOIN Product p ON cp.id_product = p.id_product
-    //         WHERE cp.id_order = :id_order
-    //     ");
-    //     $requete->bindParam(':id_order', $id_order);
-    //     $requete->execute();
-    //     $answer = $requete->fetchAll(PDO::FETCH_OBJ);
-
-    //     $orderDetails = [];
-    //     foreach ($answer as $obj) {
-    //         $orderDetails[] = [
-    //             'id_order' => $obj->id_order,
-    //             'id_product' => $obj->id_product,
-    //             'quantity' => $obj->quantity,
-    //             'product_name' => $obj->name,
-    //             'product_price' => $obj->price
-    //         ];
-    //     }
-
-    //     return $orderDetails;
-    // }
 
 
     public function getOrderDetailsById($id_order): ?Commande {
         $requete = $this->cnx->prepare("
-            SELECT c.id_order, c.statut, c.date_arrivee, c.id_client, cp.id_product, cp.quantite, p.nom, p.prix
+            SELECT c.id_order, c.statut, c.date_arrivee, c.id_client, cp.id_produit, cp.quantite, p.nom, p.prix
             FROM Commande c
-            JOIN Commande_produit cp ON c.id_order = cp.id_commande
-            JOIN Product p ON cp.id_produit = p.id_produit
+            JOIN Commande_produit cp ON c.id_order = cp.id_order
+            JOIN Produit p ON cp.id_produit = p.id_produit
             WHERE c.id_order = :id_order
         ");
         $requete->bindParam(':id_order', $id_order);
@@ -94,24 +70,32 @@ class CommandeRepository extends EntityRepository {
 
         if (empty($answer)) return null;
 
-        $commande = new Commande($answer[0]->id_order);
+        $commande = new CommandeDetail($answer[0]->id_order);
         $commande->setStatut($answer[0]->statut);
-        $commande->setDate($answer[0]->date);
+        $commande->setDate($answer[0]->date_arrivee);
         $commande->setIdclient($answer[0]->id_client);
 
         $orderDetails = [];
         foreach ($answer as $obj) {
-            $orderDetails[] = [
-                'id_product' => $obj->id_product,
-                'quantity' => $obj->quantity,
-                'product_name' => $obj->name,
-                'product_price' => $obj->price
+            $detail = [
+                'id_produit' => $obj->id_produit,
+                'Nom du produit' => $obj->nom,
+                'Prix du produit' => $obj->prix,
+                'couleur' => $obj->couleur,
+                'taille' => $obj->taille,
+                'stock' => $obj->stock,
+                'quantity' => $obj->quantite,
+                
             ];
+            array_push($orderDetails, $detail);
+            
         }
+        $commande->setOrderDetails($orderDetails);
 
-        
-        return $orderDetails;
+        return $commande;
     }
+
+
 
     // public function Insert($commande)
     public function save($commande){
@@ -146,3 +130,5 @@ class CommandeRepository extends EntityRepository {
    
     
 }
+
+

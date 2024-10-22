@@ -5,11 +5,27 @@ require_once "Controller/CategorieController.php";
 require_once "Repository/CategorieRepository.php";
 require_once "Controller/CommandeController.php";
 require_once "Repository/CommandeRepository.php";
+require_once "Controller/UserController.php";
+require_once "Repository/UserRepository.php";
 require_once "Class/HttpRequest.php";
 
 
 
 
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    
+
+}
+
+function validateUserCredentials($email, $password) {
+    // Implement your user validation logic here
+    // For example, check against a database
+    return true; // Placeholder, replace with actual validation
+}
 
 
 
@@ -39,6 +55,7 @@ $router = [
     "products" => new ProductController(),
     "categories" => new CategorieController(),
     "commandes" => new CommandeController(),
+    "users" => new UserController()
 ];
 
 // objet HttpRequest qui contient toutes les infos utiles sur la requêtes (voir class/HttpRequest.php)
