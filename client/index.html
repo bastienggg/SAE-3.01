@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZARA France | Client</title>
+    <link rel="stylesheet" href="./dist/style.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://static.zara.net/stdstatic/6.35.1//images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://static.zara.net/stdstatic/6.35.1//images/favicon-16x16.png"
+    />
+    <meta name="description" content="Shop de la marque Zara" />
+  </head>
+  <body class="scroll-smooth overflow-x-hidden relative">
+    <div id="burger"></div>
+    <div id="selection-size"></div>
+    <div id="nav"></div>
+    <ul class="flex flex-row ml-10 mt-5 categorie"></ul>
+    <div
+      id="panier-container"
+      class="flex flex-row w-full justify-center"
+    ></div>
+    <section id="main" class="flex flex-col">
+      <img
+        class="w-screen"
+        src="https://static.zara.net/assets/public/b47b/7c2e/be9f4a659d17/c59677229d45/image-landscape-cf885e34-caaa-4e31-aa00-95b6a43bfeeb-default_0/image-landscape-cf885e34-caaa-4e31-aa00-95b6a43bfeeb-default_0.jpg?ts=1729162278377&w=1920&f=auto"
+        alt=""
+      />
+      <img
+        class="w-screen"
+        src="https://static.zara.net/assets/public/0000/4530/2e7f4b66bd12/647bedd85dba/image-landscape-6e50f60a-1be0-4e8b-970f-d9d930cb5f67-default_0/image-landscape-6e50f60a-1be0-4e8b-970f-d9d930cb5f67-default_0.jpg?ts=1728982056224&w=1920&f=auto"
+        alt=""
+      />
+    </section>
+    <section
+      id="main-articles"
+      class="flex flex-row justify-evenly flex-wrap p-2 md:p-4"
+    ></section>
+    <section id="fiche-product"></section>
+
+    <!-- sert a chager les couleur personnaliser car sinon il y a des problem de chargement -->
+
+    <div class="hidden">
+      <div class="bg-Noir"></div>
+      <div class="bg-Gris"></div>
+      <div class="bg-Vert"></div>
+      <div class="bg-Bleu"></div>
+      <div class="bg-white"></div>
+      <div class="bg-black"></div>
+    </div>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
