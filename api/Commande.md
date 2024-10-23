@@ -31,6 +31,10 @@ removeFrompanier(1); // Enlève les produit du panier
 
 Commande pour inserer un utilisateur : https://mmi.unilim.fr/~bounissou1/SAE301/api/users/signup?prenom=Bastien&nom=Guitard&email=mail@mail&password=mdp
 
+Connexion : https://mmi.unilim.fr/~bounissou1/SAE301/api/users/signin?email=mail@mail&password=mdp
+
+Signout : https://mmi.unilim.fr/~bounissou1/SAE301/api/users/signout
+
 
 COMMENT INSER UNE COMMANDE COMPLête !
 
@@ -54,6 +58,8 @@ id_product -> id du produit de l'article (valeur que tu prend)
 Commande pour inserer les produits de la commande : https://mmi.unilim.fr/~bounissou1/SAE301/api/commandes/addOrderDetail?id_commande=1&price=1&quantity=1&id_product=1
 
 Voilà
+
+
 
 
 
