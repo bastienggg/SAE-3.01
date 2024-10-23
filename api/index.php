@@ -10,16 +10,11 @@ require_once "Repository/UserRepository.php";
 require_once "Class/HttpRequest.php";
 
 
-
-
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-    
 
-}
+
+
 
 function validateUserCredentials($email, $password) {
     // Implement your user validation logic here
@@ -63,7 +58,10 @@ $request = new HttpRequest();
 
 // on récupère la ressource ciblée par la requête
 $route = $request->getRessources();
-
+if ($route == "commandes" && $request->isAuth() == false){
+    http_response_code(401);
+    die();
+}
 if ( isset($router[$route]) ){ // si on a un controleur pour cette ressource
     $ctrl = $router[$route];  // on le récupère
     $json = $ctrl->jsonResponse($request); // et on invoque jsonResponse pour obtenir la réponse (json) à la requête (voir class/Controller.php et ProductController.php)

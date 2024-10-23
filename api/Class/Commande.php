@@ -15,13 +15,15 @@
 class Commande implements JsonSerializable {
     private int $id; // id de la commande
     private string $statut ; //statut de la commande
-    private string $date; // date de la commande
     private string $id_client; // id du client
     
 
 
-    public function __construct(int $id){
+    public function __construct(int $id = 0, string $statut = '', int $id_client = 0) {
         $this->id = $id;
+        $this->statut = $statut;
+        $this->id_client = $id_client;
+        
     }
 
     /**
@@ -46,7 +48,7 @@ class Commande implements JsonSerializable {
 
     
     public function JsonSerialize(): mixed{
-        return ["id" => $this->id, "statut" => $this->statut, "date" => $this->date, "id_client" => $this->id_client];
+        return ["id" => $this->id, "statut" => $this->statut, "id_client" => $this->id_client];
     }
 
     /**
@@ -69,19 +71,7 @@ class Commande implements JsonSerializable {
     /**
      * Get the value of date
      */ 
-    public function getDate(): string
-    {
-        return $this->date;
-    }
-
-    /**
-     * Set the value of date
-     */ 
-    public function setDate(string $date): self
-    {
-        $this->date = $date;
-        return $this;
-    }
+    
 
     /**
      * Get the value of id_client
@@ -117,7 +107,7 @@ class CommandeDetail extends Commande {
     }
 
     public function JsonSerialize(): mixed{
-        return ["id" => $this->getId(), "statut" => $this->getStatut(), "date" => $this->getdate(), "id_client" => $this->getIdClient(), "orderDetails" => $this->orderDetails];
+        return ["id" => $this->getId(), "statut" => $this->getStatut(), "id_client" => $this->getIdClient(), "orderDetails" => $this->orderDetails];
     }
 
     /**

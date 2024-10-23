@@ -30,16 +30,48 @@ class CommandeController extends Controller {
     }
 
     protected function processPostRequest(HttpRequest $request) {
-        $json = $request->getJson();
-        $obj = json_decode($json);
+        
+        $idaction = $request->getId();
+        if ($idaction == "addOrder"){
+            return $this->CommandeRequest($request);
+        }
 
-        $c = new Commande(0); // 0 is a symbolic and temporary value since the commande does not have a real id yet.
-        $c->setIdClient($obj->client_id);
-        $c->setDate($obj->date);
-        $c->setStatut($obj->status);
+        if ($idaction == "addOrderDetail"){
+            return $this->CommandeOrderRequest($request);
+        }
+        
 
-        $ok = $this->commandes->save($c); 
-        return $ok ? $c : false;
     }
+
+    private function CommandeRequest(HttpRequest $request){
+        $id_client = $request->getParam("id_client");
+        $statut = $request->getParam("statut");
+        
+        
+        $commande = new Commande(0);
+        $commande->setIdclient($id_client);
+        $commande->setStatut($statut);
+        
+
+        $this->commandes->save($commande);
+        $temp = $commande->getId(); //
+        
+        return ['id' => $temp, 'commande' => $commande];
+    }
+
+    private function CommandeOrderRequest(HttpRequest $request){
+        
+        $id_commande = $request->getParam("id_commande");
+        $id_product = $request->getParam("id_product");
+        $price = $request->getParam("price");
+        $quantity = $request->getParam("quantity");
+        $orderDetails = [];
+        array_push($orderDetails, ["id_produit" => $id_product, "quantity" => $quantity, "price" => $price]);
+        $commande = new CommandeDetail($id_commande);
+        $commande->setOrderDetails($orderDetails);
+        $this->commandes->saveOrderDetails($commande);
+        return $commande;
+    }
+
 }
 

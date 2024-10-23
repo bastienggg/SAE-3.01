@@ -30,7 +30,7 @@ class CommandeRepository extends EntityRepository {
         
         $p = new Commande($answer->id_order);
         $p->setStatut($answer->statut);
-        $p->setDate($answer->date_arrivee);
+        
         $p->setIdclient($answer->id_client);
         return $p;
     }
@@ -46,7 +46,7 @@ class CommandeRepository extends EntityRepository {
         foreach($answer as $obj){
             $p = new Commande($obj->id_order);
             $p->setStatut($obj->statut);
-            $p->setDate($obj->date_arrivee);
+            
             $p->setIdclient($obj->id_client);
             array_push($res, $p);
         }
@@ -58,7 +58,7 @@ class CommandeRepository extends EntityRepository {
 
     public function getOrderDetailsById($id_order): ?Commande {
         $requete = $this->cnx->prepare("
-            SELECT c.id_order, c.statut, c.date_arrivee, c.id_client, cp.id_produit, cp.quantite, p.nom, p.prix
+            SELECT c.id_order, c.statut, c.id_client, cp.id_produit, cp.quantite, p.nom, p.prix
             FROM Commande c
             JOIN Commande_produit cp ON c.id_order = cp.id_order
             JOIN Produit p ON cp.id_produit = p.id_produit
@@ -72,7 +72,7 @@ class CommandeRepository extends EntityRepository {
 
         $commande = new CommandeDetail($answer[0]->id_order);
         $commande->setStatut($answer[0]->statut);
-        $commande->setDate($answer[0]->date_arrivee);
+        
         $commande->setIdclient($answer[0]->id_client);
 
         $orderDetails = [];
@@ -99,12 +99,10 @@ class CommandeRepository extends EntityRepository {
 
     // public function Insert($commande)
     public function save($commande){
-        $requete = $this->cnx->prepare("insert into Commande (statut, date, id_client) values (:statut, :date, :id_client)");
+        $requete = $this->cnx->prepare("insert into Commande (statut, id_client) values (:statut, :id_client)");
         $statut = $commande->getStatut();
-        $date = $commande->getDate();
         $id_client = $commande->getIdclient();
         $requete->bindParam(':statut', $statut);
-        $requete->bindParam(':date', $date);
         $requete->bindParam(':id_client', $id_client);
         $answer = $requete->execute(); // an insert query returns true or false. $answer is a boolean.
 
@@ -116,6 +114,29 @@ class CommandeRepository extends EntityRepository {
           
         return false;
     }
+
+    public function saveOrderDetails($commande) {
+        $requete = $this->cnx->prepare("
+            INSERT INTO Commande_produit (id_order, id_produit, prix, quantite) 
+            VALUES (:id_order, :id_produit, :prix, :quantite)
+        ");
+        $id_order = $commande->getId();
+        $orderDetails = $commande->getOrderDetails();
+        $requete->bindParam(':id_order', $id_order);
+        foreach ($orderDetails as $detail) {
+            $id_produit = $detail['id_produit'];
+            $quantite = $detail['quantity'];
+            $prix = $detail['price'];
+            $requete->bindParam(':id_produit', $id_produit);
+            $requete->bindParam(':prix', $prix);
+            $requete->bindParam(':quantite', $quantite);
+            $requete->execute();
+        }
+        
+
+    }
+
+    
 
     public function delete($id){
         // Not implemented ! TODO when needed !

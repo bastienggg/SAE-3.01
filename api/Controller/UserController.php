@@ -40,9 +40,9 @@ class UserController extends Controller {
         if ($idaction == "signin"){
             return $this->ProcessSignInRequest($request);
         }
-        // if ($idaction == "signout" ) {
-        //     return $this->ProcessSignout($request);
-        // }
+        if ($idaction == "signout" ) {
+            return $this->ProcessSignout($request);
+        }
     }
 
     private function processSignUpRequest(HttpRequest $request){
@@ -67,7 +67,7 @@ class UserController extends Controller {
         return $this->users->save($user);
     }
 
-    private function processSignInRequest(HttpRequest $request){
+    public function processSignInRequest(HttpRequest $request){
         $email = $request->getParam("email");
         $password = $request->getParam("password");
 
@@ -76,12 +76,24 @@ class UserController extends Controller {
         if ($user == null) return false;
 
         if (password_verify($password, $user->getPassword())){
-            return $user;
+            session_regenerate_id();
+            $_SESSION['user'] = $user;
+            return $user; //si le mot de passe est correct, on retourne l'utilisateur 
+            
+            
         }
         return false;
     }
-   
+
+    private function processSignOut(HttpRequest $request){
+        session_start();
+        session_destroy();
+        echo 'session détruite';
+    }
+
 }
+   
+
 
 ?>
 

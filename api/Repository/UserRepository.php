@@ -72,7 +72,6 @@ class UserRepository extends EntityRepository {
         $answer = $requete->execute(); // an insert query returns true or false. $answer is a boolean.
 
         if ($answer){
-            var_dump($prenom, $nom, $email, $password);
             $id = $this->cnx->lastInsertId(); // retrieve the id of the last insert query
             $users->setId($id); // set the product id to its real value.
             return true;
@@ -82,7 +81,7 @@ class UserRepository extends EntityRepository {
     }
     
     public function findByEmail($email){
-        
+
         $requete = $this->cnx->prepare("select * from Client where email=:value");
         $requete->bindParam(':value', $email);
         $requete->execute();
