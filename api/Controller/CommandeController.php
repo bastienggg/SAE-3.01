@@ -16,11 +16,22 @@ class CommandeController extends Controller {
     protected function processGetRequest(HttpRequest $request) {
         // URI is .../commandes/id/{option}
         
+
         
         $id = $request->getId("id");
+        
         if ($id){
             if ($request->getParam("details")) {
                 return $this->commandes->getOrderDetailsById($id);
+            }
+            if ($request->getParam("changestatut")){
+                $statut = $request->getParam("changestatut");
+                
+                $commande = $this->commandes->find($id);
+                if ($commande) {
+                    $commande->setStatut($statut);
+                    $this->commandes->updatestatut($commande);
+                }
             }
             $c = $this->commandes->find($id);
             return $c == null ? false : $c;

@@ -150,6 +150,7 @@ class CommandeRepository extends EntityRepository {
 
 
     function update($commande) {
+        // Update the stock of the products in the order
         $orderDetails = $commande->getOrderDetails();
         foreach ($orderDetails as $detail) {
             $requete = $this->cnx->prepare("
@@ -158,7 +159,6 @@ class CommandeRepository extends EntityRepository {
                 SET p.stock = p.stock - :quantite
                 WHERE cp.id_order = :id_order AND cp.id_produit = :id_produit
             ");
-            $id_order = $commande->getId();
             $id_produit = $detail['id_produit'];
             $quantite = $detail['quantity'];
             $requete->bindParam(':id_order', $id_order);
@@ -167,6 +167,17 @@ class CommandeRepository extends EntityRepository {
             
             $requete->execute();
         }
+    }
+
+    function updatestatut($commande) {
+        $requete = $this->cnx->prepare("UPDATE Commande SET statut = :statut WHERE id_order = :id_order");
+        $id_order = $commande->getId();
+        echo $id_order;
+        $statut = $commande->getStatut();
+        echo $statut;
+        $requete->bindParam(':id_order', $id_order);
+        $requete->bindParam(':statut', $statut);
+        $requete->execute();
     }
 
    

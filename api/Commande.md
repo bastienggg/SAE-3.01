@@ -69,6 +69,16 @@ Accès au commande avec détail de produit /
 api/commandes/{ID}?details={ID}
 L'id commence à 49 btw
 
+Changer le statut : 
+/api/commandes/{id}?changestatut={valeur}
+
+Valeur possible 
+
+En cours
+Disponible 
+Retirée
+Annulée
+
 
 
 
