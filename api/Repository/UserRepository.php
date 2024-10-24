@@ -36,6 +36,7 @@ class UserRepository extends EntityRepository {
         $p->setPrenom($answer->Prenom);
         $p->setEmail($answer->Email);
         $p->setPassword($answer->mdp);
+        $p->setRole($answer->role);
         return $p;
     }
 
@@ -53,6 +54,7 @@ class UserRepository extends EntityRepository {
             $p->setPrenom($obj->Prenom);
             $p->setEmail($obj->Email);
             $p->setPassword($obj->mdp);
+            $p->setRole($obj->role);
             array_push($res, $p);
         }
        
@@ -60,15 +62,18 @@ class UserRepository extends EntityRepository {
     }
     
     public function save($users){
-        $requete = $this->cnx->prepare("insert into Client (prenom, nom, email, mdp) values (:prenom, :nom, :email, :mdp)");
+        $requete = $this->cnx->prepare("insert into Client (prenom, nom, email, mdp, role) values (:prenom, :nom, :email, :mdp, :role)");
         $prenom = $users->getPrenom();
         $nom = $users->getNom();
         $email = $users->getEmail();
         $password = $users->getPassword();
+        $role = $users->getRole();
         $requete->bindParam(':prenom', $prenom);
         $requete->bindParam(':nom', $nom);
         $requete->bindParam(':email', $email);
         $requete->bindParam(':mdp', $password);
+        $requete->bindParam(':role', $role);
+        
         $answer = $requete->execute(); // an insert query returns true or false. $answer is a boolean.
 
         if ($answer){
@@ -94,6 +99,7 @@ class UserRepository extends EntityRepository {
         $p->setPrenom($answer->Prenom);
         $p->setEmail($answer->Email);
         $p->setPassword($answer->mdp);
+        $p->setRole($answer->role);
         return $p;
     }
 

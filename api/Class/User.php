@@ -8,11 +8,13 @@ class User implements JsonSerializable {
     private string $prenom; // prenom de l'utilisateur
     private string $email; // email de l'utilisateur
     private string $password; // mot de passe de l'utilisateur
+    private string $role; // role de l'utilisateur
     
 
 
     public function __construct(int $id) {
         $this->id = $id;
+        
         
     }
 
@@ -38,7 +40,7 @@ class User implements JsonSerializable {
 
     
     public function JsonSerialize(): mixed{
-        return ["id" => $this->id, "nom" => $this->nom, "prenom" => $this->prenom, "email" => $this->email, "password" => $this->password];
+        return ["id" => $this->id, "nom" => $this->nom, "prenom" => $this->prenom, "email" => $this->email, "password" => $this->password, "role" => $this->role];
     }
 
     /**
@@ -109,4 +111,23 @@ class User implements JsonSerializable {
         $this->password = $password;
         return $this;
     }
+
+    /**
+     * Get the value of role
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set the value of role
+     */
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
+        return $this;
+    }
+
 }
