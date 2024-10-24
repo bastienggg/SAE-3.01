@@ -62,9 +62,13 @@
       placeholder="RECHERCHER"
       id="searchbar"
     />
-    <p class="hover:cursor-pointer active:font-extrabold uppercase">
-      mon compte
-    </p>
+    <a
+      href="./signin.html"
+      class="hover:cursor-pointer"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Mon compte</a
+    >
     <p
       class="hover:cursor-pointer active:font-extrabold uppercase max-sm:hidden"
     >

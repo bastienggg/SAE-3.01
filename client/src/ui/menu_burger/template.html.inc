@@ -20,7 +20,13 @@
       </svg>
 
       <div class="flex flex-row gap-4 uppercase">
-        <p class="hover:cursor-pointer">Mon compte</p>
+        <a
+          href="./signin.html"
+          class="hover:cursor-pointer"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Mon compte</a
+        >
         <p class="hover:cursor-pointer" id="panier">Panier</p>
       </div>
     </div>

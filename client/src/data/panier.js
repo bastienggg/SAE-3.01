@@ -84,5 +84,21 @@ PanierData.toFormData = function () {
     return formData;
 }
 
+PanierData.getItemsWithDetailsJSON = function () {
+    return JSON.stringify(this.items.map(item => ({
+        id_produit: item.id_produit,
+        nombre: item.nombre || 1,
+        prix: item.prix || 0
+    })));
+};
+
+PanierData.getItemsWithDetails = function () {
+    return this.items.map(item => ({
+        id_produit: item.id_produit,
+        nombre: item.nombre || 1,
+        prix: item.prix || 0
+    }));
+};
+
 
 export { PanierData };

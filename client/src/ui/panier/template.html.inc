@@ -30,6 +30,7 @@
   </div>
   <p
     class="text-center text-white bg-black hover:text-black hover:bg-white w-full text-l uppercase p-2 border-solid border-2 border-black hover:cursor-pointer lg:text-2xl lg:p-4 hover:ease-in-out"
+    id="commander"
   >
     Commander
   </p>

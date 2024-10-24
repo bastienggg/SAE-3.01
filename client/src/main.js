@@ -1,3 +1,5 @@
+import { postRequest } from "./lib/api-request.js";
+
 import { ProductData } from "./data/product.js";
 import { CatégorieData } from "./data/categories.js";
 import { PanierData } from "./data/panier.js";
@@ -15,6 +17,10 @@ import { ProductSizeView } from "./ui/product-sizes/index.js";
 import { panierView } from "./ui/panier/index.js";
 import { ProductPanierView } from "./ui/product-panier/index.js";
 
+
+
+
+
 let C = {};
 
 // Fonction pour rendre du HTML dans un élément sélectionné par un sélecteur
@@ -22,6 +28,45 @@ C.renderHTML = function (selector, html) {
     console.log('Appel de renderHTML avec selector:', selector, 'et html:', html);
     document.querySelector(selector).innerHTML = html;
 };
+
+// Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "commander"
+C.setupCommanderClickListener = function () {
+    console.log('Appel de setupCommanderClickListener');
+    document.getElementById('commander').addEventListener('click', function () {
+        console.log('Bouton "commander" cliqué');
+        console.log('Produits du panier:', PanierData.getItemsWithDetails());
+
+
+
+        let clientId = 20;
+        let initOrderUrl = `../api/commandes/addOrder?statut=en%20cours&id_client=${clientId}`;
+
+        postRequest(initOrderUrl, {}).then(initResponse => {
+            if (initResponse) {
+                console.log('Bon de commande initialisé:', initResponse);
+                let orderId = initResponse.id;
+                console.log('ID du bon de commande:', orderId);
+
+                // 2ème étape : Insérer les produits de la commande
+                let panierItems = JSON.parse(PanierData.getItemsWithDetailsJSON());
+                panierItems.forEach(item => {
+                    let addOrderDetailUrl = `../api/commandes/addOrderDetail?id_commande=${orderId}&price=${item.prix}&quantity=${item.nombre}&id_product=${item.id_produit}`;
+                    postRequest(addOrderDetailUrl, {}).then(detailResponse => {
+                        if (detailResponse) {
+                            console.log('Produit ajouté à la commande:', detailResponse);
+                        } else {
+                            console.error('Échec de l\'ajout du produit à la commande');
+                        }
+                    });
+                });
+            } else {
+                console.error('Échec de l\'initialisation du bon de commande');
+                alert('Échec de l\'initialisation du bon de commande. Veuillez réessayer.');
+            }
+        });
+    });
+};
+
 
 // Fonction pour configurer l'écouteur de clic sur l'élément avec l'ID "delete-from-panier"
 C.setupDeleteFromPanierClickListener = function () {
@@ -46,6 +91,8 @@ C.setupDeleteFromPanierClickListener = function () {
             C.setupDeleteFromPanierClickListener();
             C.setupMinusProductClickListener();
             C.setupPlusProductClickListener();
+            C.setupCommanderClickListener();
+
         });
     });
 };
@@ -78,6 +125,8 @@ C.setupPanierClickListener = function () {
             C.setupDeleteFromPanierClickListener();
             C.setupMinusProductClickListener();
             C.setupPlusProductClickListener();
+            C.setupCommanderClickListener();
+
         });
     });
 };
@@ -101,6 +150,8 @@ C.setupPlusProductClickListener = function () {
             C.setupDeleteFromPanierClickListener();
             C.setupMinusProductClickListener();
             C.setupPlusProductClickListener();
+            C.setupCommanderClickListener();
+
         });
     });
 };
@@ -124,6 +175,8 @@ C.setupMinusProductClickListener = function () {
             C.setupDeleteFromPanierClickListener();
             C.setupPlusProductClickListener();
             C.setupMinusProductClickListener();
+            C.setupCommanderClickListener();
+
         });
     });
 };
