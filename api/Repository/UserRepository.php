@@ -32,10 +32,10 @@ class UserRepository extends EntityRepository {
         if ($answer==false) return null; // may be false if the sql request failed (wrong $id value for example)
         
         $p = new User($answer->id_client);
-        $p->setNom($answer->nom);
-        $p->setPrenom($answer->prenom);
-        $p->setEmail($answer->email);
-        $p->setPassword($answer->password);
+        $p->setNom($answer->Nom);
+        $p->setPrenom($answer->Prenom);
+        $p->setEmail($answer->Email);
+        $p->setPassword($answer->mdp);
         return $p;
     }
 
@@ -49,10 +49,10 @@ class UserRepository extends EntityRepository {
         $res = [];
         foreach($answer as $obj){
             $p = new User($obj->id_client);
-            $p->setNom($obj->nom);
-            $p->setPrenom($obj->prenom);
-            $p->setEmail($obj->email);
-            $p->setPassword($obj->password);
+            $p->setNom($obj->Nom);
+            $p->setPrenom($obj->Prenom);
+            $p->setEmail($obj->Email);
+            $p->setPassword($obj->mdp);
             array_push($res, $p);
         }
        
