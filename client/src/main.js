@@ -38,7 +38,7 @@ C.setupCommanderClickListener = function () {
 
 
 
-        let clientId = 1;
+        let clientId = 1
         let initOrderUrl = `../api/commandes/addOrder?statut=en%20cours&id_client=${clientId}`;
 
         postRequest(initOrderUrl, {}).then(initResponse => {
