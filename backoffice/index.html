@@ -19,23 +19,23 @@
     />
     <meta name="description" content="Backoffice de gestion" />
   </head>
-  <body class="scroll-smooth overflow-x-hidden relative bg-gray-100">
+  <body class="scroll-smooth overflow-x-hidden relative bg-gray-100 w-full">
     <header class="bg-white shadow-md p-4">
-      <h1 class="text-2xl font-bold text-center">Backoffice</h1>
+      <h1 class="text-3xl  text-center">Backoffice</h1>
     </header>
     <div class="flex justify-center"></div>
-      <nav class="w-1/5 bg-gray-200 p-4">
-        <ul>
+      <nav class="w-full bg-gray-200 p-4 ">
+        <ul class="flex flex-row justify-around w-full">
           <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Dashboard</a></li>
-          <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Produits</a></li>
-          <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Commandes</a></li>
+          <li class="mb-2"><a href="#produits" class="text-blue-500 hover:text-blue-700">Produits</a></li>
+          <li class="mb-2"><a href="#commandes" class="text-blue-500 hover:text-blue-700">Commandes</a></li>
           <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Clients</a></li>
           <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Rapports</a></li>
         </ul>
       </nav>
-      <main class="w-4/5 p-4">
+      <main class=" p-4 w-full">
         <section id="dashboard" class="mb-4">
-          <h2 class="text-xl font-semibold mb-2">Tableau de bord</h2>
+          <h2 class="text-2xl  mb-2">Tableau de bord</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-white p-4 shadow rounded">Statistique 1</div>
             <div class="bg-white p-4 shadow rounded">Statistique 2</div>
@@ -44,14 +44,14 @@
           </div>
         </section>
         <section id="products" class="mb-4">
-          <h2 class="text-xl font-semibold mb-2">Produits</h2>
-          <div class="bg-white p-4 shadow rounded">
-            <!-- Contenu des produits -->
+          <h2 class="text-2xl  mb-2">Produits</h2>
+          <div class="flex flex-row gap-0 p-2 overflow-y-hidden w-full flex-wrap items-start" id="produits">
+            <!-- Contenu des commandes -->
           </div>
         </section>
-        <section id="orders" class="mb-4">
-          <h2 class="text-xl font-semibold mb-2">Commandes</h2>
-          <div class="bg-white p-4 shadow rounded">
+        <section id="orders" class="mb-4 w-full">
+          <h2 class="text-2xl  mb-2 text-left">Commandes</h2>
+          <div class="flex flex-row gap-2 p-2 flex-wrap  w-full" id="commandes">
             <!-- Contenu des commandes -->
           </div>
         </section>
