@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backoffice | Gestion</title>
+    <link rel="stylesheet" href="./dist/style.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://static.zara.net/stdstatic/6.35.1//images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://static.zara.net/stdstatic/6.35.1//images/favicon-16x16.png"
+    />
+    <meta name="description" content="Backoffice de gestion" />
+  </head>
+  <body class="scroll-smooth overflow-x-hidden relative bg-gray-100">
+    <header class="bg-white shadow-md p-4">
+      <h1 class="text-2xl font-bold text-center">Backoffice</h1>
+    </header>
+    <div class="flex justify-center"></div>
+      <nav class="w-1/5 bg-gray-200 p-4">
+        <ul>
+          <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Dashboard</a></li>
+          <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Produits</a></li>
+          <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Commandes</a></li>
+          <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Clients</a></li>
+          <li class="mb-2"><a href="#" class="text-blue-500 hover:text-blue-700">Rapports</a></li>
+        </ul>
+      </nav>
+      <main class="w-4/5 p-4">
+        <section id="dashboard" class="mb-4">
+          <h2 class="text-xl font-semibold mb-2">Tableau de bord</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-4 shadow rounded">Statistique 1</div>
+            <div class="bg-white p-4 shadow rounded">Statistique 2</div>
+            <div class="bg-white p-4 shadow rounded">Statistique 3</div>
+            <div class="bg-white p-4 shadow rounded">Statistique 4</div>
+          </div>
+        </section>
+        <section id="products" class="mb-4">
+          <h2 class="text-xl font-semibold mb-2">Produits</h2>
+          <div class="bg-white p-4 shadow rounded">
+            <!-- Contenu des produits -->
+          </div>
+        </section>
+        <section id="orders" class="mb-4">
+          <h2 class="text-xl font-semibold mb-2">Commandes</h2>
+          <div class="bg-white p-4 shadow rounded">
+            <!-- Contenu des commandes -->
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
