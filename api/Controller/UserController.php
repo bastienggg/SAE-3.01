@@ -78,6 +78,7 @@ class UserController extends Controller {
         if (password_verify($password, $user->getPassword())){
             session_regenerate_id();
             $_SESSION['user'] = $user;
+            echo json_encode($_SESSION);
             return $user; //si le mot de passe est correct, on retourne l'utilisateur 
             
             

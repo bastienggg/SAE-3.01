@@ -58,10 +58,10 @@ $request = new HttpRequest();
 
 // on récupère la ressource ciblée par la requête
 $route = $request->getRessources();
-if ($route == "commandes" && $request->isAuth() == false){
-    http_response_code(401);
-    die();
-}
+// if ($route == "commandes" && !$request->isAuth()){
+//     http_response_code(401);
+//     die();
+// }
 if ( isset($router[$route]) ){ // si on a un controleur pour cette ressource
     $ctrl = $router[$route];  // on le récupère
     $json = $ctrl->jsonResponse($request); // et on invoque jsonResponse pour obtenir la réponse (json) à la requête (voir class/Controller.php et ProductController.php)
@@ -74,9 +74,10 @@ if ( isset($router[$route]) ){ // si on a un controleur pour cette ressource
     }
     die();
 }
-http_response_code(404); // si on a pas de controlleur pour traiter la requête -> 404
-die();
+// http_response_code(404); // si on a pas de controlleur pour traiter la requête -> 404
+// die();
 
 
 
 ?>
+

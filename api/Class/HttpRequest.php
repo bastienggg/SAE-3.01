@@ -15,7 +15,7 @@ class HttpRequest {
     private string $id = ""; // identifiant de la ressource (pas forcément défini, notament en POST ou en GET)
     private ?array $params = null; // éventuels paramètres de la requête (on a bien dit "éventuel")
     private string $json = ""; // données json transmise par le client (seulement en cas de requête en POST, PATCH ou PUT)
-    private bool $auth = false;
+    private bool $auth = false; // indique si l'utilisateur est authentifié ou non
     /**
      *  __construct
      * 
@@ -47,11 +47,12 @@ class HttpRequest {
         $this->params = $_REQUEST;
         $this->json = file_get_contents("php://input"); // lecture des données reçues au format json (s'il y en a)
 
+
         if (isset($_SERVER['user'])){
             $this->auth = true;
         }
     }
-
+    
     public function isAuth(){
         return $this->auth;
     }
