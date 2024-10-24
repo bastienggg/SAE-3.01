@@ -16,6 +16,7 @@ class CommandeController extends Controller {
     protected function processGetRequest(HttpRequest $request) {
         // URI is .../commandes/id/{option}
         
+        
         $id = $request->getId("id");
         if ($id){
             if ($request->getParam("details")) {

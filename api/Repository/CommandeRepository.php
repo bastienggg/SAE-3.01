@@ -109,6 +109,7 @@ class CommandeRepository extends EntityRepository {
         if ($answer){
             $id = $this->cnx->lastInsertId(); // retrieve the id of the last insert query
             $commande->setId($id); // set the commande id to its real value.
+            
             return true;
         }
           
@@ -122,17 +123,21 @@ class CommandeRepository extends EntityRepository {
         ");
         $id_order = $commande->getId();
         $orderDetails = $commande->getOrderDetails();
-        $requete->bindParam(':id_order', $id_order);
+        
         foreach ($orderDetails as $detail) {
             $id_produit = $detail['id_produit'];
             $quantite = $detail['quantity'];
             $prix = $detail['price'];
+            
+            $requete->bindParam(':id_order', $id_order);
             $requete->bindParam(':id_produit', $id_produit);
             $requete->bindParam(':prix', $prix);
             $requete->bindParam(':quantite', $quantite);
+            
             $requete->execute();
         }
         
+        $this->update($commande);
 
     }
 
@@ -143,9 +148,25 @@ class CommandeRepository extends EntityRepository {
         return false;
     }
 
-    public function update($product){
-        // Not implemented ! TODO when needed !
-        return false;
+
+    function update($commande) {
+        $orderDetails = $commande->getOrderDetails();
+        foreach ($orderDetails as $detail) {
+            $requete = $this->cnx->prepare("
+                UPDATE Produit p
+                JOIN Commande_produit cp ON p.id_produit = cp.id_produit
+                SET p.stock = p.stock - :quantite
+                WHERE cp.id_order = :id_order AND cp.id_produit = :id_produit
+            ");
+            $id_order = $commande->getId();
+            $id_produit = $detail['id_produit'];
+            $quantite = $detail['quantity'];
+            $requete->bindParam(':id_order', $id_order);
+            $requete->bindParam(':id_produit', $id_produit);
+            $requete->bindParam(':quantite', $quantite);
+            
+            $requete->execute();
+        }
     }
 
    
