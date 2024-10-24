@@ -27,7 +27,7 @@
           <path d="M14 1.99805H0V-0.00195312H14V1.99805Z" fill="black" />
         </svg>
       </div>
-      <p class="p-2">{{nombre}}</p>
+      <p id = "quantite" class="p-2">{{nombre}}</p>
       <div
         class="p-2 hover:cursor-pointer"
         data-id="{{id_produit}}"

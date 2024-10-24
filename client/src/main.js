@@ -159,9 +159,24 @@ C.setupPlusProductClickListener = function () {
         element.addEventListener('click', function () {
             console.log('Élément "plus-product" cliqué');
             let productId = Number(this.dataset.id);
-            PanierData.incrementItemCount(productId);
-            console.log('Produit avec ID', productId, 'incrémenté de 1');
+            console.log('ID du produit à incrémenter:', productId);
+            
+            
 
+            fetch(`../api/products/${productId}`)
+                .then(response => response.json())
+                .then(stockData => {
+                    let stock = stockData.stock;
+                    let qt = document.querySelector(`#quantite`).textContent;
+                    if ( Number(qt) >= stock) {
+                        let temp = document.querySelector("#plus-product")
+                        temp.style.opacity = '0';
+                        PanierData.decrementItemCount(productId);
+                        return;
+                    }
+            });             
+            console.log('Produit avec ID', productId, 'incrémenté de 1');
+            PanierData.incrementItemCount(productId);
             let panier = PanierData.getUniqueItemsWithCount();
             console.log('Produits du panier:', panier);
             let html2 = ProductPanierView.render(panier);
@@ -300,7 +315,23 @@ C.handleProductClick = async function (productId, productName) {
         await C.handleProductSizes(sizes);
         await C.handleProductColors(colors);
         C.setupAddButtonPanierListener();
+
     }
+
+    fetch(`../api/products/${productId}`)
+                .then(response => response.json())
+                .then(stockData => {
+                    let stock = stockData.stock;
+                    
+                    if (stock == "0" || stock == 0) {
+                        let temp = document.querySelector("#ajouter")
+                        temp.style.display = 'none';
+                        return;
+                    } else {
+                        console.log('Stock disponible:', stock)
+                    }
+                
+            });
 };
 
 
@@ -353,8 +384,13 @@ C.setupAddButtonPanierListener = function () {
         element.addEventListener('click', function () {
             console.log('Bouton "ajouter" cliqué');
             let button = this;
+            
             let dataName = button.dataset.name;
+            
             let dataColor = button.dataset.clr;
+            
+            
+            
             console.log('data-name du bouton cliqué:', dataName);
             console.log('data-clr du bouton cliqué:', dataColor);
             if (!button.dataset.clicked) {

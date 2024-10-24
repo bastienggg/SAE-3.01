@@ -6,6 +6,7 @@ const templateFile = await fetch("src/ui/fiche-product/template.html.inc");
 const template = await templateFile.text();
 
 
+
 let FicheProductView = {
 
     render: function (data) {
@@ -15,7 +16,11 @@ let FicheProductView = {
         }
         return html;
     }
+    
 
 }
+
+
+
 
 export { FicheProductView };
