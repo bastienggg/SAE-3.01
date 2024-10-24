@@ -38,7 +38,7 @@ C.setupCommanderClickListener = function () {
 
 
 
-        let clientId = 20;
+        let clientId = 1;
         let initOrderUrl = `../api/commandes/addOrder?statut=en%20cours&id_client=${clientId}`;
 
         postRequest(initOrderUrl, {}).then(initResponse => {
@@ -54,6 +54,13 @@ C.setupCommanderClickListener = function () {
                     postRequest(addOrderDetailUrl, {}).then(detailResponse => {
                         if (detailResponse) {
                             console.log('Produit ajouté à la commande:', detailResponse);
+                            let id = Number(item.id_produit);
+                            PanierData.deleteById(id);
+                            let panier = PanierData.getAll() || [];
+                            console.log('Produits du panier:', panier);
+                            let html2 = ProductPanierView.render(panier);
+                            C.renderHTML("#products-panier", html2);
+
                         } else {
                             console.error('Échec de l\'ajout du produit à la commande');
                         }
@@ -64,6 +71,7 @@ C.setupCommanderClickListener = function () {
                 alert('Échec de l\'initialisation du bon de commande. Veuillez réessayer.');
             }
         });
+
     });
 };
 
