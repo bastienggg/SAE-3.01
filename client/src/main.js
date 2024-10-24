@@ -36,9 +36,9 @@ C.setupCommanderClickListener = function () {
         console.log('Bouton "commander" cliqué');
         console.log('Produits du panier:', PanierData.getItemsWithDetails());
 
+        
 
-
-        let clientId = 1
+        let clientId = dataClient.id;
         let initOrderUrl = `../api/commandes/addOrder?statut=en%20cours&id_client=${clientId}`;
 
         postRequest(initOrderUrl, {}).then(initResponse => {
