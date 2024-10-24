@@ -36,7 +36,16 @@ C.setupCommanderClickListener = function () {
         console.log('Bouton "commander" cliqué');
         console.log('Produits du panier:', PanierData.getItemsWithDetails());
 
+        if (PanierData.getItemsWithDetails().length === 0) {
+            alert('Veuillez ajouter des produits au panier avant de commander.');
+            return;
+        }
 
+        if (!localStorage.getItem('user')) {
+            alert('Veuillez vous connecter avant de commander.');
+            window.location.href = 'signin.html';
+            return;
+        }
 
         let temp = JSON.parse(localStorage.getItem('user'));
         let dataClient = { id: temp.id };
