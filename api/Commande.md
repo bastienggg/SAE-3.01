@@ -61,6 +61,16 @@ Voilà
 
 
 
+Accès au commande : 
+api/commandes pour les bon de commande 
+
+Accès au commande avec détail de produit /
+
+api/commandes/{ID}?details={ID}
+L'id commence à 49 btw
+
+
+
 
 
 

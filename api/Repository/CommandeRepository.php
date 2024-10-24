@@ -58,7 +58,7 @@ class CommandeRepository extends EntityRepository {
 
     public function getOrderDetailsById($id_order): ?Commande {
         $requete = $this->cnx->prepare("
-            SELECT c.id_order, c.statut, c.id_client, cp.id_produit, cp.quantite, p.nom, p.prix
+            SELECT c.id_order, c.statut, c.id_client, cp.id_produit, cp.quantite, p.nom, p.prix, p.couleur, p.taille, p.stock
             FROM Commande c
             JOIN Commande_produit cp ON c.id_order = cp.id_order
             JOIN Produit p ON cp.id_produit = p.id_produit
