@@ -14,7 +14,6 @@ let handler_sub = async function(ev) {
     console.log(ok);
     if (ok) {
         window.location.href = 'index.html';
-        ech
         localStorage.setItem('user', JSON.stringify(ok));
     }
     else {
