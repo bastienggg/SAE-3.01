@@ -28,12 +28,15 @@ C.setupValidationListeners = function () {
                 let selectedValue = selectElement.value;
                 console.log('ID du bouton validé:', dataId, 'Valeur sélectionnée:', selectedValue);
                 // Vous pouvez ajouter ici le code pour traiter la valeur sélectionnée
-                let initOrderUrl = `../api/commandes/${dataId}?changestatut=${selectedValue}`;
+                let initOrderUrl = `/api/commandes/${dataId}?changestatut=${selectedValue}`;
+                
                 postRequest(initOrderUrl, {})
                     .then(response => {
                         console.log('Request successful:', response);
                         // Traiter la réponse JSON ici
+                        
                         if (response.ok) {
+
                             return response.json();
                         } else {
                             throw new Error('Network response was not ok.');
