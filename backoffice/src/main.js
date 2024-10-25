@@ -90,6 +90,7 @@ function displayOrderDetails(orderDetails) {
 
         let productName = document.createElement('span');
         productName.textContent = product.name;
+        console.log('Nom du produit:', product.name);
         productRow.appendChild(productName);
 
         let productQuantity = document.createElement('input');
@@ -123,7 +124,7 @@ function saveOrderChanges(orderId) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ products: updatedProducts })
+    
     })
     
 }
