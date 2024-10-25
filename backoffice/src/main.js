@@ -22,22 +22,25 @@ C.renderHTML = function (selector, html) {
 C.setupValidationListeners = function () {
     document.querySelectorAll('#valider').forEach(button => {
         button.addEventListener('click', function () {
-            let dataId = this.getAttribute('data-id');
+            let dataId = Number(this.getAttribute('data-id'));
+            
             let selectElement = document.querySelector(`select[data-id="${dataId}"]`);
             if (selectElement) {
                 let selectedValue = selectElement.value;
                 console.log('ID du bouton validé:', dataId, 'Valeur sélectionnée:', selectedValue);
                 // Vous pouvez ajouter ici le code pour traiter la valeur sélectionnée
-                let initOrderUrl = `/api/commandes/${dataId}?changestatut=${selectedValue}`;
-                
-                postRequest(initOrderUrl, {})
+                let initOrderUrl = `../api/commandes/${dataId}?changestatut=${selectedValue}`;
+                console.log('URL de la commande initiale:', initOrderUrl);
+                fetch(initOrderUrl)
                     .then(response => {
                         console.log('Request successful:', response);
                         // Traiter la réponse JSON ici
                         
                         if (response.ok) {
-
-                            return response.json();
+                            location.reload();
+                            alert('Statut de commande changé avec succès');
+                            return true;
+                            
                         } else {
                             throw new Error('Network response was not ok.');
                         }
@@ -46,9 +49,7 @@ C.setupValidationListeners = function () {
                         console.log('Response JSON:', data);
                         // Vous pouvez ajouter ici le code pour mettre à jour l'interface utilisateur en fonction de la réponse JSON
                     })
-                    .catch(error => {
-                        console.error('Request failed:', error);
-                    });
+                    
             } else {
                 console.log('Aucun élément select trouvé avec data-id:', dataId);
             }
