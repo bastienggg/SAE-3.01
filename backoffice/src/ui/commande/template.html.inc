@@ -30,4 +30,14 @@
   >
     Valider la modification
   </p>
+
+  <p
+  class="w-full border-solid border-2 border-black p-4 text-center text-black bg-white hover:bg-black hover:text-white hover:cursor-pointer"
+  id="order-details"
+  data-id="{{id}}"
+
+  
+  >
+  Details
+  </p>
 </div>

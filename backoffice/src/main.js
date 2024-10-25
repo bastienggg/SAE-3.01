@@ -58,6 +58,76 @@ C.setupValidationListeners = function () {
 };
 
 
+// Ajouter un bouton pour consulter les détails de la commande
+C.setupOrderDetailsListeners =  function () {
+document.querySelectorAll('#order-details').forEach(button => {
+    button.addEventListener('click', async function () {
+        let orderId = Number(this.getAttribute('data-id'));
+        let orderDetailsUrl = `../api/commandes/${orderId}?details=${orderId}`;
+
+        
+            let response = await fetch(orderDetailsUrl);
+            let data = await response.json();
+            let orderDetails = data.orderDetails;
+            console.log(orderDetails);
+            displayOrderDetails(orderDetails);
+            
+            
+
+            
+    });
+});
+}
+
+function displayOrderDetails(orderDetails) {
+    // Créer une interface utilisateur pour afficher les détails de la commande
+    let orderDetailsContainer = document.getElementById('order-details-container');
+    orderDetailsContainer.innerHTML = '';
+    console.log('Détails de la commande:', orderDetails);
+    orderDetails.forEach(product => {
+        let productRow = document.createElement('div');
+        productRow.classList.add('product-row');
+
+        let productName = document.createElement('span');
+        productName.textContent = product.name;
+        productRow.appendChild(productName);
+
+        let productQuantity = document.createElement('input');
+        productQuantity.type = 'number';
+        productQuantity.value = product.quantity;
+        productQuantity.setAttribute('data-product-id', product.id);
+        productRow.appendChild(productQuantity);
+
+        orderDetailsContainer.appendChild(productRow);
+    });
+
+    let saveButton = document.createElement('button');
+    saveButton.textContent = 'Save Changes';
+    saveButton.addEventListener('click', function () {
+        saveOrderChanges(orderDetails.id);
+    });
+    orderDetailsContainer.appendChild(saveButton);
+}
+
+function saveOrderChanges(orderId) {
+    let updatedProducts = [];
+    document.querySelectorAll('.product-row input').forEach(input => {
+        let productId = Number(input.getAttribute('data-product-id'));
+        let newQuantity = Number(input.value);
+        updatedProducts.push({ id: productId, quantity: newQuantity });
+    });
+
+    let updateOrderUrl = `../api/commandes/${orderId}/update`;
+    fetch(updateOrderUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ products: updatedProducts })
+    })
+    
+}
+
 
 // Fonction pour initialiser l'application en configurant les écouteurs d'événements et en chargeant les vues initiales
 C.init = async function () {
@@ -74,6 +144,8 @@ C.init = async function () {
     C.renderHTML("#commandes", html2);
 
     C.setupValidationListeners();
+    C.setupOrderDetailsListeners();
+
 
 };
 
