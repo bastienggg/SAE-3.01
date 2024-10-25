@@ -51,6 +51,10 @@ class CommandeController extends Controller {
         if ($idaction == "addOrderDetail"){
             return $this->CommandeOrderRequest($request);
         }
+
+        if ($idaction == "update"){
+            return $this-> UpdateRequest($request);
+        }
         
 
     }
@@ -82,6 +86,15 @@ class CommandeController extends Controller {
         $commande = new CommandeDetail($id_commande);
         $commande->setOrderDetails($orderDetails);
         $this->commandes->saveOrderDetails($commande);
+        return $commande;
+    }
+
+    private function UpdateRequest(HttpRequest $request){
+        $id = $request->getParam("id");
+        $quantity = $request->getParam("quantite");
+        $commande = new Commande($id);
+        $commande->setStatut($quantity);
+        $this->commandes->updateQuantity($commande);
         return $commande;
     }
 

@@ -184,6 +184,20 @@ class CommandeRepository extends EntityRepository {
         return true;
     }
 
+    function updatequantity($commande) {
+        $requete = $this->cnx->prepare("UPDATE Commande_produit SET quantite = :quantite WHERE id_order = :id_order AND id_produit = :id_produit");
+        $id_order = $commande->getId();
+        $orderDetails = $commande->getOrderDetails();
+        foreach ($orderDetails as $detail) {
+            $id_produit = $detail['id_produit'];
+            $quantite = $detail['quantity'];
+            $requete->bindParam(':id_order', $id_order);
+            $requete->bindParam(':id_produit', $id_produit);
+            $requete->bindParam(':quantite', $quantite);
+            $requete->execute();
+        }  
+    }
+
    
     
 }
