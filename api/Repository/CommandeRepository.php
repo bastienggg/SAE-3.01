@@ -177,7 +177,11 @@ class CommandeRepository extends EntityRepository {
         echo $statut;
         $requete->bindParam(':id_order', $id_order);
         $requete->bindParam(':statut', $statut);
-        $requete->execute();
+        $requete->execute(); // 
+        if ($requete->rowCount() == 0) {
+            return false;
+        }
+        return true;
     }
 
    
